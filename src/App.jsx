@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { supabase } from "./supabase.js"
 import {
-  ROUNDS, calcPoints, isRoundOpen, isRoundFinished,
+  ROUNDS, FLAGS, calcPoints, isRoundOpen, isRoundFinished,
   formatDateBR, formatDob, stringColor, initials
 } from "./rounds.js"
 
@@ -59,10 +59,11 @@ const css = `
   .group-tag { font-size: 10px; font-weight: 700; background: #EFF6FF; color: var(--blue); border-radius: 4px; padding: 2px 6px; border: 1px solid #BFDBFE; }
   .match-item.match-done .group-tag { background: #F1F5F9; color: var(--text-light); border-color: var(--border); }
   .match-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-light); flex-shrink: 0; }
-  .match-teams { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .match-teams { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
   .team-name { flex: 1; font-size: 14px; font-weight: 700; color: var(--text); }
   .team-name.away { text-align: right; }
-  .vs-badge { font-size: 11px; font-weight: 700; color: var(--text-light); padding: 4px 8px; background: var(--bg); border-radius: 6px; border: 1px solid var(--border); white-space: nowrap; }
+  .team-flag { font-size: 22px; line-height: 1; flex-shrink: 0; }
+  .vs-badge { font-size: 11px; font-weight: 700; color: var(--text-light); padding: 4px 8px; background: var(--bg); border-radius: 6px; border: 1px solid var(--border); white-space: nowrap; flex-shrink: 0; }
   .real-result-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding: 8px 12px; background: var(--green-bg); border-radius: 8px; border: 1px solid var(--green-border); }
   .real-result-label { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--green); letter-spacing: 0.08em; flex-shrink: 0; }
   .real-score { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; color: #14532D; flex: 1; text-align: center; letter-spacing: 0.1em; }
@@ -460,9 +461,11 @@ function PicksTab({ currentUser, picks, savePick }) {
                     <span className="match-meta-dot" /><span>{match.city}</span>
                   </div>
                   <div className="match-teams">
+                    <span className="team-flag">{FLAGS[match.home]}</span>
                     <span className="team-name">{match.home}</span>
                     <span className="vs-badge">vs</span>
                     <span className="team-name away">{match.away}</span>
+                    <span className="team-flag">{FLAGS[match.away]}</span>
                   </div>
                   {hasResult && (
                     <div className="real-result-row">
@@ -545,7 +548,9 @@ function GaleraTab({ currentUser, picks, users }) {
               <div key={match.id} className="galera-match">
                 <div className="galera-match-header" onClick={() => setExpandedMatch(isExpanded ? null : match.id)}>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div className="galera-match-title">{match.home} vs {match.away}</div>
+                    <div className="galera-match-title">
+                      {FLAGS[match.home]} {match.home} vs {match.away} {FLAGS[match.away]}
+                    </div>
                     <div className="galera-match-sub">{match.date} · {match.city}</div>
                   </div>
                   <div className="galera-match-right">
@@ -661,7 +666,7 @@ function HistoryTab({ currentUser, picks }) {
                 <div key={match.id} className="history-match">
                   <div className="history-header">
                     <div>
-                      <div className="history-game">{match.home} vs {match.away}</div>
+                      <div className="history-game">{FLAGS[match.home]} {match.home} vs {match.away} {FLAGS[match.away]}</div>
                       <div className="history-date">{match.date} · {match.city}</div>
                     </div>
                     <PtsChip pts={pts} />
