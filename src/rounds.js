@@ -16,7 +16,7 @@ export const ROUNDS = [
   {
     id: 2,
     label: "2ª Rodada — Fase de Grupos",
-    startDate: "2026-06-18",
+    startDate: "2026-06-17",
     matches: [
       { id: "m8",  home: "Rep. Tcheca",  away: "África do Sul",  date: "18/06", time: "13h",    city: "Atlanta",          group: "A", result: null },
       { id: "m9",  home: "Brasil",       away: "Haiti",          date: "19/06", time: "21h30",  city: "Philadelphia",     group: "C", result: null },

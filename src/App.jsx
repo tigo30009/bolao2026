@@ -216,7 +216,6 @@ export default function App() {
   const [toast, setToast]           = useState(null)
   const [loading, setLoading]       = useState(true)
   const [newName, setNewName]       = useState("")
-  const [newDob, setNewDob]         = useState("")
   const [saving, setSaving]         = useState(false)
 
   // ── load all users + picks on mount ──
@@ -258,18 +257,18 @@ export default function App() {
   }, [])
 
   async function handleRegister() {
-    if (!newName.trim() || !newDob || saving) return
+    if (!newName.trim() || saving) return
     setSaving(true)
     const { data, error } = await supabase
       .from("users")
-      .insert({ name: newName.trim(), dob: newDob })
+      .insert({ name: newName.trim() })
       .select()
       .single()
     if (error) { showToast("Erro ao cadastrar. Tente novamente.", "error"); setSaving(false); return }
     setUsers(p => [...p, data])
     setCurrentUser(data)
     localStorage.setItem("bolao2026_user", JSON.stringify(data))
-    setNewName(""); setNewDob("")
+    setNewName("")
     showToast("Bem-vindo, " + data.name + "! 🎉", "success")
     setSaving(false)
   }
@@ -337,10 +336,7 @@ export default function App() {
               {users.map(u => (
                 <div key={u.id} className="user-item" onClick={() => { setCurrentUser(u); localStorage.setItem("bolao2026_user", JSON.stringify(u)) }}>
                   <div className="avatar" style={{ background: stringColor(u.name) }}>{initials(u.name)}</div>
-                  <div>
-                    <div className="user-item-name">{u.name}</div>
-                    <div className="user-item-dob">Nasc. {formatDob(u.dob)}</div>
-                  </div>
+                  <div className="user-item-name">{u.name}</div>
                   <span className="chevron-right">›</span>
                 </div>
               ))}
@@ -349,9 +345,7 @@ export default function App() {
           </>)}
           <label className="field-label">Nome completo</label>
           <input className="field-input" value={newName} onChange={e => setNewName(e.target.value)} placeholder="Seu nome" />
-          <label className="field-label">Data de nascimento</label>
-          <input className="field-input" type="date" value={newDob} onChange={e => setNewDob(e.target.value)} />
-          <button className="primary-btn" onClick={handleRegister} disabled={!newName.trim() || !newDob || saving}>
+          <button className="primary-btn" onClick={handleRegister} disabled={!newName.trim() || saving}>
             {saving ? "Cadastrando..." : "Criar perfil e entrar"}
           </button>
         </div>
