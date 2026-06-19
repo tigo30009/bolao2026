@@ -99,11 +99,11 @@ export const ROUNDS = [
     startDate: "2026-06-17",
     matches: [
       // Grupo A
-      { id: "m25", home: "Rep. Tcheca",   away: "África do Sul",  date: "18/06", time: "13h",   city: "Atlanta",          group: "A", result: null },
-      { id: "m26", home: "México",        away: "Coreia do Sul",  date: "18/06", time: "22h",   city: "Guadalajara",      group: "A", result: null },
+      { id: "m25", home: "Rep. Tcheca",   away: "África do Sul",  date: "18/06", time: "13h",   city: "Atlanta",          group: "A", result: { home: 1, away: 1 } },
+      { id: "m26", home: "México",        away: "Coreia do Sul",  date: "18/06", time: "22h",   city: "Guadalajara",      group: "A", result: { home: 1, away: 0 } },
       // Grupo B
-      { id: "m27", home: "Suíça",         away: "Bósnia",         date: "18/06", time: "16h",   city: "Los Angeles",      group: "B", result: null },
-      { id: "m28", home: "Canadá",        away: "Qatar",          date: "18/06", time: "19h",   city: "Vancouver",        group: "B", result: null },
+      { id: "m27", home: "Suíça",         away: "Bósnia",         date: "18/06", time: "16h",   city: "Los Angeles",      group: "B", result: { home: 4, away: 1 } },
+      { id: "m28", home: "Canadá",        away: "Qatar",          date: "18/06", time: "19h",   city: "Vancouver",        group: "B", result: { home: 6, away: 0 } },
       // Grupo C
       { id: "m29", home: "Escócia",       away: "Marrocos",       date: "19/06", time: "16h",   city: "Boston",           group: "C", result: null },
       { id: "m30", home: "Brasil",        away: "Haiti",          date: "19/06", time: "21h30", city: "Philadelphia",     group: "C", result: null },
