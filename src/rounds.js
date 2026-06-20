@@ -105,11 +105,11 @@ export const ROUNDS = [
       { id: "m27", home: "Suíça",         away: "Bósnia",         date: "18/06", time: "16h",   city: "Los Angeles",      group: "B", result: { home: 4, away: 1 } },
       { id: "m28", home: "Canadá",        away: "Qatar",          date: "18/06", time: "19h",   city: "Vancouver",        group: "B", result: { home: 6, away: 0 } },
       // Grupo C
-      { id: "m29", home: "Escócia",       away: "Marrocos",       date: "19/06", time: "16h",   city: "Boston",           group: "C", result: null },
-      { id: "m30", home: "Brasil",        away: "Haiti",          date: "19/06", time: "21h30", city: "Philadelphia",     group: "C", result: null },
+      { id: "m29", home: "Escócia",       away: "Marrocos",       date: "19/06", time: "16h",   city: "Boston",           group: "C", result: { home: 0, away: 1 } },
+      { id: "m30", home: "Brasil",        away: "Haiti",          date: "19/06", time: "21h30", city: "Philadelphia",     group: "C", result: { home: 3, away: 0 } },
       // Grupo D
-      { id: "m31", home: "EUA",           away: "Austrália",      date: "19/06", time: "16h",   city: "Seattle",          group: "D", result: null },
-      { id: "m32", home: "Turquia",       away: "Paraguai",       date: "20/06", time: "00h",   city: "San Francisco",    group: "D", result: null },
+      { id: "m31", home: "EUA",           away: "Austrália",      date: "19/06", time: "16h",   city: "Seattle",          group: "D", result: { home: 2, away: 0 } },
+      { id: "m32", home: "Turquia",       away: "Paraguai",       date: "20/06", time: "00h",   city: "San Francisco",    group: "D", result: { home: 0, away: 1 } },
       // Grupo E
       { id: "m33", home: "Alemanha",      away: "Costa do Marfim",date: "20/06", time: "17h",   city: "Toronto",          group: "E", result: null },
       { id: "m34", home: "Equador",       away: "Curaçao",        date: "20/06", time: "21h",   city: "Kansas City",      group: "E", result: null },
