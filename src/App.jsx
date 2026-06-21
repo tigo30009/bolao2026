@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react"
 import { supabase } from "./supabase.js"
 import {
   ROUNDS, FLAGS, calcPoints, isRoundOpen, isRoundFinished,
+  isPickAllowed, hoursUntilLock,
   formatDateBR, formatDob, stringColor, initials
 } from "./rounds.js"
 
@@ -444,14 +445,17 @@ function PicksTab({ currentUser, picks, savePick }) {
               </span>
             </div>
             {round.matches.map(match => {
-              const savedPick   = (picks[currentUser.id] || {})[match.id]
-              const p           = draft[match.id] || {}
-              const pts         = savedPick ? calcPoints(savedPick, match.result) : null
-              const hasResult   = !!match.result
-              const pickLocked  = !open || (hasResult && !!savedPick)
-              const showSaveBtn = open && !hasResult
-              const isDone      = hasResult && !!savedPick
-              const isSaving    = saving[match.id]
+              const savedPick    = (picks[currentUser.id] || {})[match.id]
+              const p            = draft[match.id] || {}
+              const pts          = savedPick ? calcPoints(savedPick, match.result) : null
+              const hasResult    = !!match.result
+              const pickAllowed  = isPickAllowed(match) && !savedPick
+              const pickLocked   = !pickAllowed
+              const showSaveBtn  = !hasResult && !savedPick
+              const isDone       = hasResult && !!savedPick
+              const isSaving     = saving[match.id]
+              const hrsToLock    = hoursUntilLock(match)
+              const closingSoon  = !hasResult && !savedPick && hrsToLock !== null && hrsToLock <= 24 && hrsToLock > 0
 
               return (
                 <div key={match.id} className={`match-item${isDone ? " match-done" : ""}`}>
@@ -490,13 +494,24 @@ function PicksTab({ currentUser, picks, savePick }) {
                         : <span className="pts-pending pts-value">–</span>}
                     </div>
                   </div>
-                  {showSaveBtn && (
-                    savedPick
-                      ? <button className="save-btn locked" disabled>✓ Palpite salvo</button>
-                      : <button className="save-btn default" onClick={() => handleSave(match.id)}
-                          disabled={isSaving || p.home === "" || p.away === "" || p.home == null || p.away == null}>
-                          {isSaving ? "Salvando..." : "Salvar palpite"}
-                        </button>
+
+                  {closingSoon && (
+                    <div className="locked-notice" style={{ background: "#FFF7ED", borderColor: "#FED7AA", color: "#C2410C" }}>
+                      ⚠️ Fecha em {Math.floor(hrsToLock)}h — palpite logo!
+                    </div>
+                  )}
+
+                  {showSaveBtn && pickAllowed && (
+                    <button className="save-btn default" onClick={() => handleSave(match.id)}
+                      disabled={isSaving || p.home === "" || p.away === "" || p.home == null || p.away == null}>
+                      {isSaving ? "Salvando..." : "Salvar palpite"}
+                    </button>
+                  )}
+                  {showSaveBtn && !pickAllowed && !hasResult && (
+                    <div className="locked-notice">🔒 Prazo encerrado — palpites fechados 8h antes do jogo</div>
+                  )}
+                  {savedPick && !hasResult && (
+                    <button className="save-btn locked" disabled>✓ Palpite salvo</button>
                   )}
                   {hasResult && !savedPick && <div className="locked-notice">⏱ Jogo encerrado — palpite não registrado</div>}
                   {hasResult && savedPick && <div className="locked-notice" style={{ background: "#F0FDF4", borderColor: "#BBF7D0", color: "#166534" }}>🔒 Palpite registrado — resultado apurado</div>}
