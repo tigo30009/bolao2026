@@ -528,7 +528,11 @@ function PicksTab({ currentUser, picks, savePick }) {
 // ─── GALERA TAB ──────────────────────────────────────────────────────────────
 function GaleraTab({ currentUser, picks, users }) {
   const [selectedRound, setSelectedRound] = useState(0)
-  const openRounds = ROUNDS.filter(r => isRoundOpen(r.startDate))
+  // Galera mostra todas as rodadas que têm pelo menos 1 palpite registrado, ou que já abriram
+  const visibleRounds = ROUNDS.filter(r =>
+    isRoundOpen(r.startDate) || r.matches.some(m => users.some(u => (picks[u.id] || {})[m.id]))
+  )
+  const openRounds = visibleRounds
   const firstMatchId = openRounds[0]?.matches[0]?.id
   const [expandedMatch, setExpandedMatch] = useState(firstMatchId || null)
 
