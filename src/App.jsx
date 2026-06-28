@@ -178,26 +178,24 @@ const css = `
 
   /* ── MATA-MATA BRACKET ── */
   .bracket-outer { overflow-x: auto; padding: 8px 0 16px; -webkit-overflow-scrolling: touch; }
-  .bracket-scroll-hint { font-size: 11px; color: var(--text-light); text-align: center; padding: 4px 0 10px; }
-  .bracket { display: flex; align-items: center; gap: 0; width: max-content; padding: 0 12px; }
+  .bracket { display: flex; align-items: stretch; gap: 0; width: max-content; padding: 0 12px; }
   .b-phase { display: flex; flex-direction: column; }
-  .b-phase-hdr { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); text-align: center; padding: 0 4px 8px; white-space: nowrap; }
-  .b-matches { display: flex; flex-direction: column; justify-content: space-around; flex: 1; gap: 4px; }
-  .b-match { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); width: 100px; }
-  .b-match.final { border-color: #15803D; width: 110px; }
-  .b-match.final .b-team:first-child { border-bottom-color: #15803D; }
-  .b-date { font-size: 9px; color: var(--text-light); background: #F8FAFC; padding: 2px 6px; border-bottom: 1px solid var(--border); text-align: center; }
-  .b-team { display: flex; align-items: center; gap: 4px; padding: 5px 6px; font-size: 11px; color: var(--text); }
+  .b-phase-hdr { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); text-align: center; padding: 0 4px 6px; white-space: nowrap; }
+  .b-matches { display: flex; flex-direction: column; justify-content: space-around; flex: 1; }
+  .b-match { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); width: 96px; margin: 2px 0; }
+  .b-match.final { border-color: #15803D; width: 100px; }
+  .b-date { font-size: 9px; color: var(--text-light); background: #F8FAFC; padding: 2px 5px; border-bottom: 1px solid var(--border); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .b-team { display: flex; align-items: center; gap: 3px; padding: 5px 5px; }
   .b-team:first-of-type { border-bottom: 1px solid var(--border); }
-  .b-team.tbd { color: var(--text-light); font-style: italic; }
+  .b-team.tbd { opacity: 0.4; }
   .b-team.winner { background: #F0FDF4; }
   .b-team.winner .b-name { color: #15803D; font-weight: 700; }
   .b-team.loser .b-name { color: var(--text-light); }
-  .b-flag { font-size: 13px; flex-shrink: 0; }
-  .b-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
-  .b-score { font-size: 11px; font-weight: 700; flex-shrink: 0; color: var(--text-muted); }
-  .b-conn { display: flex; flex-direction: column; justify-content: space-around; width: 14px; flex-shrink: 0; align-self: stretch; margin-top: 22px; }
-  .b-conn-line { flex: 1; border-right: 1px solid var(--border-md); }
+  .b-flag { font-size: 12px; flex-shrink: 0; line-height: 1; }
+  .b-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; color: var(--text); }
+  .b-score { font-size: 10px; font-weight: 700; flex-shrink: 0; color: var(--text-muted); min-width: 10px; text-align: right; }
+  /* SVG-based connectors */
+  .b-conn-svg { flex-shrink: 0; align-self: stretch; overflow: visible; margin-top: 22px; }
   .loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100dvh; gap: 16px; color: var(--text-muted); font-size: 14px; }
   .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -796,6 +794,9 @@ const KNOCKOUT = {
   ],
 }
 
+// Match card heights: date bar 18px + 2 teams * 27px = 72px total, margin 2px top+bottom = 76px
+const MATCH_H = 76
+
 function BMatch({ m, isFinal }) {
   const hasResult = !!m.result
   const homeWin = hasResult && m.result.home > m.result.away
@@ -818,37 +819,46 @@ function BMatch({ m, isFinal }) {
   )
 }
 
-function BPhase({ label, matches, gap }) {
+// SVG connector: draws bracket lines between n pairs of matches
+// parentN = number of matches in FROM phase, childN = matches in TO phase
+function BConnSvg({ fromCount, totalHeight, headerOffset }) {
+  const pairH = totalHeight / (fromCount / 2)
+  const paths = []
+  for (let i = 0; i < fromCount / 2; i++) {
+    const y1 = headerOffset + i * pairH + pairH * 0.25
+    const y2 = headerOffset + i * pairH + pairH * 0.75
+    const ymid = (y1 + y2) / 2
+    paths.push(
+      <path key={i} d={`M0,${y1} H8 V${y2} H0`} fill="none" stroke="#CBD5E1" strokeWidth="1" />,
+      <path key={`m${i}`} d={`M8,${ymid} H16`} fill="none" stroke="#CBD5E1" strokeWidth="1" />
+    )
+  }
   return (
-    <div className="b-phase">
-      <div className="b-phase-hdr">{label}</div>
-      <div className="b-matches" style={{ gap: gap || 4 }}>
-        {matches.map(m => (
-          <div key={m.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <BMatch m={m} isFinal={label === 'Final'} />
-          </div>
-        ))}
-      </div>
-    </div>
+    <svg width="16" style={{ flexShrink: 0, alignSelf: 'stretch' }} viewBox={`0 0 16 ${totalHeight}`} preserveAspectRatio="none">
+      {paths}
+    </svg>
   )
 }
 
-function BConn({ count, gap }) {
+function BPhaseCol({ matches, label, totalHeight, headerH }) {
   return (
-    <div className="b-conn" style={{ gap: gap || 4 }}>
-      {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="b-conn-line" />
-      ))}
+    <div className="b-phase" style={{ height: totalHeight }}>
+      <div className="b-phase-hdr" style={{ height: headerH }}>{label}</div>
+      <div className="b-matches" style={{ height: totalHeight - headerH }}>
+        {matches.map(m => <BMatch key={m.id} m={m} isFinal={label === '🏆 Final'} />)}
+      </div>
     </div>
   )
 }
 
 function MataMataTab() {
   const { r16, qf, sf, semi, final } = KNOCKOUT
-  // split into left (top half) and right (bottom half) brackets
-  const r16L = r16.slice(0, 8), r16R = r16.slice(8, 16)
-  const qfL  = qf.slice(0, 4),  qfR  = qf.slice(4, 8)
-  const sfL  = sf.slice(0, 2),  sfR  = sf.slice(2, 4)
+  const HEADER_H = 22
+  const TOTAL_H = r16.length / 2 * MATCH_H + HEADER_H  // 8 * 76 + 22 = 630
+
+  const r16L = r16.slice(0,8),  r16R = r16.slice(8,16)
+  const qfL  = qf.slice(0,4),   qfR  = qf.slice(4,8)
+  const sfL  = sf.slice(0,2),   sfR  = sf.slice(2,4)
 
   return (
     <div>
@@ -856,36 +866,36 @@ function MataMataTab() {
         <span className="section-hd-title">Chaveamento</span>
         <div className="section-hd-line" />
       </div>
-      <div style={{ fontSize: 11, color: 'var(--text-light)', marginBottom: 10, textAlign: 'center' }}>
+      <div style={{ fontSize: 11, color: 'var(--text-light)', marginBottom: 8, textAlign: 'center' }}>
         ← deslize para ver o chaveamento completo →
       </div>
       <div className="bracket-outer">
-        <div className="bracket">
-          {/* LEFT HALF */}
-          <BPhase label="Rodada 16" matches={r16L} gap={4} />
-          <BConn count={4} gap={36} />
-          <BPhase label="Oitavas" matches={qfL} gap={36} />
-          <BConn count={2} gap={110} />
-          <BPhase label="Quartas" matches={sfL} gap={110} />
-          <BConn count={1} gap={0} />
-          <BPhase label="Semi" matches={semi.slice(0,1)} gap={0} />
-          <BConn count={1} gap={0} />
+        <div className="bracket" style={{ alignItems: 'flex-start' }}>
+          {/* ── LEFT SIDE ── */}
+          <BPhaseCol label="Rodada 16" matches={r16L} totalHeight={TOTAL_H} headerH={HEADER_H} />
+          <BConnSvg fromCount={8} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
+          <BPhaseCol label="Oitavas" matches={qfL} totalHeight={TOTAL_H} headerH={HEADER_H} />
+          <BConnSvg fromCount={4} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
+          <BPhaseCol label="Quartas" matches={sfL} totalHeight={TOTAL_H} headerH={HEADER_H} />
+          <BConnSvg fromCount={2} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
+          <BPhaseCol label="Semi" matches={semi.slice(0,1)} totalHeight={TOTAL_H} headerH={HEADER_H} />
+          <BConnSvg fromCount={1} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
 
-          {/* CENTER — FINAL */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-            <div className="b-phase-hdr" style={{ color: '#15803D' }}>🏆 Final</div>
+          {/* ── FINAL CENTER ── */}
+          <div className="b-phase" style={{ height: TOTAL_H, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="b-phase-hdr" style={{ color: '#15803D', textAlign: 'center' }}>🏆 Final</div>
             <BMatch m={final[0]} isFinal />
           </div>
 
-          {/* RIGHT HALF */}
-          <BConn count={1} gap={0} />
-          <BPhase label="Semi" matches={semi.slice(1,2)} gap={0} />
-          <BConn count={1} gap={0} />
-          <BPhase label="Quartas" matches={sfR} gap={110} />
-          <BConn count={2} gap={110} />
-          <BPhase label="Oitavas" matches={qfR} gap={36} />
-          <BConn count={4} gap={36} />
-          <BPhase label="Rodada 16" matches={r16R} gap={4} />
+          {/* ── RIGHT SIDE (mirrored) ── */}
+          <BConnSvg fromCount={1} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
+          <BPhaseCol label="Semi" matches={semi.slice(1,2)} totalHeight={TOTAL_H} headerH={HEADER_H} />
+          <BConnSvg fromCount={2} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
+          <BPhaseCol label="Quartas" matches={sfR} totalHeight={TOTAL_H} headerH={HEADER_H} />
+          <BConnSvg fromCount={4} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
+          <BPhaseCol label="Oitavas" matches={qfR} totalHeight={TOTAL_H} headerH={HEADER_H} />
+          <BConnSvg fromCount={8} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
+          <BPhaseCol label="Rodada 16" matches={r16R} totalHeight={TOTAL_H} headerH={HEADER_H} />
         </div>
       </div>
     </div>
