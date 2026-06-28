@@ -176,14 +176,14 @@ export function isPickAllowed(match) {
   if (!match.kickoff) return true
   const kickoff = new Date(match.kickoff + ":00-03:00")
   const now = new Date()
-  return (kickoff - now) / (1000 * 60 * 60) > 8
+  return (kickoff - now) / (1000 * 60 * 60) > 1
 }
 
 export function hoursUntilLock(match) {
   if (!match.kickoff) return null
   const kickoff = new Date(match.kickoff + ":00-03:00")
   const now = new Date()
-  return (kickoff - now) / (1000 * 60 * 60) - 8
+  return (kickoff - now) / (1000 * 60 * 60) - 1
 }
 
 export function getOutcome(h, a) {

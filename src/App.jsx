@@ -484,7 +484,7 @@ function PicksTab({ currentUser, picks, savePick }) {
               const isDone       = hasResult && !!savedPick
               const isSaving     = saving[match.id]
               const hrsToLock    = hoursUntilLock(match)
-              const closingSoon  = !hasResult && !savedPick && hrsToLock !== null && hrsToLock <= 24 && hrsToLock > 0
+              const closingSoon  = !hasResult && !savedPick && hrsToLock !== null && hrsToLock <= 2 && hrsToLock > 0
 
               return (
                 <div key={match.id} className={`match-item${isDone ? " match-done" : ""}`}>
