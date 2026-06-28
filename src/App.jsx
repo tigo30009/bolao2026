@@ -175,6 +175,29 @@ const css = `
   .empty-state { text-align: center; padding: 48px 20px; color: var(--text-muted); }
   .empty-state-icon { font-size: 40px; margin-bottom: 10px; }
   .empty-state-text { font-size: 14px; line-height: 1.6; }
+
+  /* ── MATA-MATA BRACKET ── */
+  .bracket-outer { overflow-x: auto; padding: 8px 0 16px; -webkit-overflow-scrolling: touch; }
+  .bracket-scroll-hint { font-size: 11px; color: var(--text-light); text-align: center; padding: 4px 0 10px; }
+  .bracket { display: flex; align-items: center; gap: 0; width: max-content; padding: 0 12px; }
+  .b-phase { display: flex; flex-direction: column; }
+  .b-phase-hdr { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); text-align: center; padding: 0 4px 8px; white-space: nowrap; }
+  .b-matches { display: flex; flex-direction: column; justify-content: space-around; flex: 1; gap: 4px; }
+  .b-match { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); width: 100px; }
+  .b-match.final { border-color: #15803D; width: 110px; }
+  .b-match.final .b-team:first-child { border-bottom-color: #15803D; }
+  .b-date { font-size: 9px; color: var(--text-light); background: #F8FAFC; padding: 2px 6px; border-bottom: 1px solid var(--border); text-align: center; }
+  .b-team { display: flex; align-items: center; gap: 4px; padding: 5px 6px; font-size: 11px; color: var(--text); }
+  .b-team:first-of-type { border-bottom: 1px solid var(--border); }
+  .b-team.tbd { color: var(--text-light); font-style: italic; }
+  .b-team.winner { background: #F0FDF4; }
+  .b-team.winner .b-name { color: #15803D; font-weight: 700; }
+  .b-team.loser .b-name { color: var(--text-light); }
+  .b-flag { font-size: 13px; flex-shrink: 0; }
+  .b-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+  .b-score { font-size: 11px; font-weight: 700; flex-shrink: 0; color: var(--text-muted); }
+  .b-conn { display: flex; flex-direction: column; justify-content: space-around; width: 14px; flex-shrink: 0; align-self: stretch; margin-top: 22px; }
+  .b-conn-line { flex: 1; border-right: 1px solid var(--border-md); }
   .loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100dvh; gap: 16px; color: var(--text-muted); font-size: 14px; }
   .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -199,6 +222,12 @@ const IconHistory = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
     <path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>
+  </svg>
+)
+const IconBracket = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 6h4v12H3"/><path d="M17 6h4v12h-4"/>
+    <path d="M7 12h10"/><path d="M7 8h3v8H7"/><path d="M14 8h3v8h-3"/>
   </svg>
 )
 const IconGroup = () => (
@@ -369,16 +398,18 @@ export default function App() {
           </div>
         </div>
         <div className="content">
-          {tab === "picks"   && <PicksTab   currentUser={currentUser} picks={picks} savePick={savePick} />}
-          {tab === "galera"  && <GaleraTab  currentUser={currentUser} picks={picks} users={users} />}
-          {tab === "ranking" && <RankingTab ranking={getRanking()} currentUser={currentUser} />}
-          {tab === "history" && <HistoryTab currentUser={currentUser} picks={picks} />}
+          {tab === "picks"    && <PicksTab    currentUser={currentUser} picks={picks} savePick={savePick} />}
+          {tab === "galera"   && <GaleraTab   currentUser={currentUser} picks={picks} users={users} />}
+          {tab === "ranking"  && <RankingTab  ranking={getRanking()} currentUser={currentUser} />}
+          {tab === "mataмata" && <MataMataTab />}
+          {tab === "history"  && <HistoryTab  currentUser={currentUser} picks={picks} />}
         </div>
         <nav className="bottom-nav">
-          <button className={`nav-btn ${tab === "picks"   ? "active" : ""}`} onClick={() => setTab("picks")}  ><IconBall />Palpites</button>
-          <button className={`nav-btn ${tab === "galera"  ? "active" : ""}`} onClick={() => setTab("galera")} ><IconGroup />Galera</button>
-          <button className={`nav-btn ${tab === "ranking" ? "active" : ""}`} onClick={() => setTab("ranking")}><IconTrophy />Ranking</button>
-          <button className={`nav-btn ${tab === "history" ? "active" : ""}`} onClick={() => setTab("history")}><IconHistory />Histórico</button>
+          <button className={`nav-btn ${tab === "picks"    ? "active" : ""}`} onClick={() => setTab("picks")}   ><IconBall />Palpites</button>
+          <button className={`nav-btn ${tab === "galera"   ? "active" : ""}`} onClick={() => setTab("galera")}  ><IconGroup />Galera</button>
+          <button className={`nav-btn ${tab === "ranking"  ? "active" : ""}`} onClick={() => setTab("ranking")} ><IconTrophy />Ranking</button>
+          <button className={`nav-btn ${tab === "mataмata" ? "active" : ""}`} onClick={() => setTab("mataмata")}><IconBracket />Mata-Mata</button>
+          <button className={`nav-btn ${tab === "history"  ? "active" : ""}`} onClick={() => setTab("history")} ><IconHistory />Histórico</button>
         </nav>
         {toast && <div className={`toast ${toast.type}`}>{toast.msg}</div>}
       </div>
@@ -716,6 +747,147 @@ function HistoryTab({ currentUser, picks }) {
           </div>
         )
       })}
+    </div>
+  )
+}
+
+// ─── MATA-MATA TAB ────────────────────────────────────────────────────────────
+const KNOCKOUT = {
+  r16: [
+    { id:'k1',  date:'28/06', home:{name:'África do Sul', flag:'🇿🇦'}, away:{name:'Canadá',     flag:'🇨🇦'}, result:null },
+    { id:'k2',  date:'29/06', home:{name:'Brasil',        flag:'🇧🇷'}, away:{name:'Japão',       flag:'🇯🇵'}, result:null },
+    { id:'k3',  date:'29/06', home:{name:'Alemanha',      flag:'🇩🇪'}, away:{name:'Paraguai',    flag:'🇵🇾'}, result:null },
+    { id:'k4',  date:'29/06', home:{name:'Holanda',       flag:'🇳🇱'}, away:{name:'Marrocos',    flag:'🇲🇦'}, result:null },
+    { id:'k5',  date:'30/06', home:{name:'C. do Marfim',  flag:'🇨🇮'}, away:{name:'Noruega',     flag:'🇳🇴'}, result:null },
+    { id:'k6',  date:'30/06', home:{name:'França',        flag:'🇫🇷'}, away:{name:'Suécia',      flag:'🇸🇪'}, result:null },
+    { id:'k7',  date:'30/06', home:{name:'México',        flag:'🇲🇽'}, away:{name:'Equador',     flag:'🇪🇨'}, result:null },
+    { id:'k8',  date:'01/07', home:{name:'Inglaterra',    flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, away:{name:'Congo (RD)',  flag:'🇨🇩'}, result:null },
+    { id:'k9',  date:'01/07', home:{name:'Bélgica',       flag:'🇧🇪'}, away:{name:'Senegal',     flag:'🇸🇳'}, result:null },
+    { id:'k10', date:'01/07', home:{name:'EUA',           flag:'🇺🇸'}, away:{name:'Bósnia',      flag:'🇧🇦'}, result:null },
+    { id:'k11', date:'02/07', home:{name:'Espanha',       flag:'🇪🇸'}, away:{name:'Áustria',     flag:'🇦🇹'}, result:null },
+    { id:'k12', date:'02/07', home:{name:'Portugal',      flag:'🇵🇹'}, away:{name:'Croácia',     flag:'🇭🇷'}, result:null },
+    { id:'k13', date:'03/07', home:{name:'Suíça',         flag:'🇨🇭'}, away:{name:'Argélia',     flag:'🇩🇿'}, result:null },
+    { id:'k14', date:'03/07', home:{name:'Austrália',     flag:'🇦🇺'}, away:{name:'Egito',       flag:'🇪🇬'}, result:null },
+    { id:'k15', date:'03/07', home:{name:'Argentina',     flag:'🇦🇷'}, away:{name:'Cabo Verde',  flag:'🇨🇻'}, result:null },
+    { id:'k16', date:'03/07', home:{name:'Colômbia',      flag:'🇨🇴'}, away:{name:'Gana',        flag:'🇬🇭'}, result:null },
+  ],
+  qf: [
+    { id:'q1', date:'04/07', home:{name:'Venc. K1',  flag:''}, away:{name:'Venc. K2',  flag:''}, result:null },
+    { id:'q2', date:'04/07', home:{name:'Venc. K3',  flag:''}, away:{name:'Venc. K4',  flag:''}, result:null },
+    { id:'q3', date:'05/07', home:{name:'Venc. K5',  flag:''}, away:{name:'Venc. K6',  flag:''}, result:null },
+    { id:'q4', date:'05/07', home:{name:'Venc. K7',  flag:''}, away:{name:'Venc. K8',  flag:''}, result:null },
+    { id:'q5', date:'06/07', home:{name:'Venc. K9',  flag:''}, away:{name:'Venc. K10', flag:''}, result:null },
+    { id:'q6', date:'06/07', home:{name:'Venc. K11', flag:''}, away:{name:'Venc. K12', flag:''}, result:null },
+    { id:'q7', date:'07/07', home:{name:'Venc. K13', flag:''}, away:{name:'Venc. K14', flag:''}, result:null },
+    { id:'q8', date:'07/07', home:{name:'Venc. K15', flag:''}, away:{name:'Venc. K16', flag:''}, result:null },
+  ],
+  sf: [
+    { id:'s1', date:'09/07', home:{name:'Venc. Q1', flag:''}, away:{name:'Venc. Q2', flag:''}, result:null },
+    { id:'s2', date:'10/07', home:{name:'Venc. Q3', flag:''}, away:{name:'Venc. Q4', flag:''}, result:null },
+    { id:'s3', date:'11/07', home:{name:'Venc. Q5', flag:''}, away:{name:'Venc. Q6', flag:''}, result:null },
+    { id:'s4', date:'11/07', home:{name:'Venc. Q7', flag:''}, away:{name:'Venc. Q8', flag:''}, result:null },
+  ],
+  semi: [
+    { id:'se1', date:'14/07', home:{name:'Venc. S1', flag:''}, away:{name:'Venc. S2', flag:''}, result:null },
+    { id:'se2', date:'15/07', home:{name:'Venc. S3', flag:''}, away:{name:'Venc. S4', flag:''}, result:null },
+  ],
+  final: [
+    { id:'f1', date:'19/07', home:{name:'Venc. Semi 1', flag:''}, away:{name:'Venc. Semi 2', flag:''}, result:null },
+  ],
+}
+
+function BMatch({ m, isFinal }) {
+  const hasResult = !!m.result
+  const homeWin = hasResult && m.result.home > m.result.away
+  const awayWin = hasResult && m.result.away > m.result.home
+  const isTbd = !m.home.flag
+  return (
+    <div className={`b-match${isFinal ? " final" : ""}`}>
+      <div className="b-date">{m.date}</div>
+      <div className={`b-team${isTbd ? " tbd" : ""}${homeWin ? " winner" : ""}${hasResult && !homeWin ? " loser" : ""}`}>
+        {m.home.flag && <span className="b-flag">{m.home.flag}</span>}
+        <span className="b-name">{m.home.name}</span>
+        {hasResult && <span className="b-score">{m.result.home}</span>}
+      </div>
+      <div className={`b-team${isTbd ? " tbd" : ""}${awayWin ? " winner" : ""}${hasResult && !awayWin ? " loser" : ""}`}>
+        {m.away.flag && <span className="b-flag">{m.away.flag}</span>}
+        <span className="b-name">{m.away.name}</span>
+        {hasResult && <span className="b-score">{m.result.away}</span>}
+      </div>
+    </div>
+  )
+}
+
+function BPhase({ label, matches, gap }) {
+  return (
+    <div className="b-phase">
+      <div className="b-phase-hdr">{label}</div>
+      <div className="b-matches" style={{ gap: gap || 4 }}>
+        {matches.map(m => (
+          <div key={m.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <BMatch m={m} isFinal={label === 'Final'} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function BConn({ count, gap }) {
+  return (
+    <div className="b-conn" style={{ gap: gap || 4 }}>
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="b-conn-line" />
+      ))}
+    </div>
+  )
+}
+
+function MataMataTab() {
+  const { r16, qf, sf, semi, final } = KNOCKOUT
+  // split into left (top half) and right (bottom half) brackets
+  const r16L = r16.slice(0, 8), r16R = r16.slice(8, 16)
+  const qfL  = qf.slice(0, 4),  qfR  = qf.slice(4, 8)
+  const sfL  = sf.slice(0, 2),  sfR  = sf.slice(2, 4)
+
+  return (
+    <div>
+      <div className="section-hd" style={{ marginBottom: 8 }}>
+        <span className="section-hd-title">Chaveamento</span>
+        <div className="section-hd-line" />
+      </div>
+      <div style={{ fontSize: 11, color: 'var(--text-light)', marginBottom: 10, textAlign: 'center' }}>
+        ← deslize para ver o chaveamento completo →
+      </div>
+      <div className="bracket-outer">
+        <div className="bracket">
+          {/* LEFT HALF */}
+          <BPhase label="Rodada 16" matches={r16L} gap={4} />
+          <BConn count={4} gap={36} />
+          <BPhase label="Oitavas" matches={qfL} gap={36} />
+          <BConn count={2} gap={110} />
+          <BPhase label="Quartas" matches={sfL} gap={110} />
+          <BConn count={1} gap={0} />
+          <BPhase label="Semi" matches={semi.slice(0,1)} gap={0} />
+          <BConn count={1} gap={0} />
+
+          {/* CENTER — FINAL */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+            <div className="b-phase-hdr" style={{ color: '#15803D' }}>🏆 Final</div>
+            <BMatch m={final[0]} isFinal />
+          </div>
+
+          {/* RIGHT HALF */}
+          <BConn count={1} gap={0} />
+          <BPhase label="Semi" matches={semi.slice(1,2)} gap={0} />
+          <BConn count={1} gap={0} />
+          <BPhase label="Quartas" matches={sfR} gap={110} />
+          <BConn count={2} gap={110} />
+          <BPhase label="Oitavas" matches={qfR} gap={36} />
+          <BConn count={4} gap={36} />
+          <BPhase label="Rodada 16" matches={r16R} gap={4} />
+        </div>
+      </div>
     </div>
   )
 }
