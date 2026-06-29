@@ -794,8 +794,17 @@ const KNOCKOUT = {
   ],
 }
 
-// Match card heights: date bar 18px + 2 teams * 27px = 72px total, margin 2px top+bottom = 76px
-const MATCH_H = 76
+// Match card: date(18) + team(24) + team(24) = 66px
+const MH = 66  // match height px
+const GAP = 4  // gap between matches in same phase
+
+// Total height for N matches in a column (matches + gaps between them)
+function colH(n) { return n * MH + (n - 1) * GAP }
+
+// Center Y of match i (0-indexed) within a column of n matches
+function matchCY(i, n) {
+  return i * (MH + GAP) + MH / 2
+}
 
 function BMatch({ m, isFinal }) {
   const hasResult = !!m.result
@@ -803,14 +812,14 @@ function BMatch({ m, isFinal }) {
   const awayWin = hasResult && m.result.away > m.result.home
   const isTbd = !m.home.flag
   return (
-    <div className={`b-match${isFinal ? " final" : ""}`}>
+    <div className={`b-match${isFinal ? " final" : ""}`} style={{ height: MH, flexShrink: 0 }}>
       <div className="b-date">{m.date}</div>
-      <div className={`b-team${isTbd ? " tbd" : ""}${homeWin ? " winner" : ""}${hasResult && !homeWin ? " loser" : ""}`}>
+      <div className={`b-team${isTbd ? " tbd" : ""}${homeWin ? " winner" : ""}${hasResult && !homeWin && hasResult ? " loser" : ""}`}>
         {m.home.flag && <span className="b-flag">{m.home.flag}</span>}
         <span className="b-name">{m.home.name}</span>
         {hasResult && <span className="b-score">{m.result.home}</span>}
       </div>
-      <div className={`b-team${isTbd ? " tbd" : ""}${awayWin ? " winner" : ""}${hasResult && !awayWin ? " loser" : ""}`}>
+      <div className={`b-team${isTbd ? " tbd" : ""}${awayWin ? " winner" : ""}${hasResult && !awayWin && hasResult ? " loser" : ""}`}>
         {m.away.flag && <span className="b-flag">{m.away.flag}</span>}
         <span className="b-name">{m.away.name}</span>
         {hasResult && <span className="b-score">{m.result.away}</span>}
@@ -819,33 +828,57 @@ function BMatch({ m, isFinal }) {
   )
 }
 
-// SVG connector: draws bracket lines between n pairs of matches
-// parentN = number of matches in FROM phase, childN = matches in TO phase
-function BConnSvg({ fromCount, totalHeight, headerOffset }) {
-  const pairH = totalHeight / (fromCount / 2)
-  const paths = []
-  for (let i = 0; i < fromCount / 2; i++) {
-    const y1 = headerOffset + i * pairH + pairH * 0.25
-    const y2 = headerOffset + i * pairH + pairH * 0.75
-    const ymid = (y1 + y2) / 2
-    paths.push(
-      <path key={i} d={`M0,${y1} H8 V${y2} H0`} fill="none" stroke="#CBD5E1" strokeWidth="1" />,
-      <path key={`m${i}`} d={`M8,${ymid} H16`} fill="none" stroke="#CBD5E1" strokeWidth="1" />
-    )
+// Connector SVG between two phases
+// leftN = matches on left, rightN = matches on right, totalH = full column height
+// leftN matches are evenly spaced in totalH, rightN matches are evenly spaced in totalH
+// draws: right edge of left match → horizontal → vertical bracket → horizontal → left edge of right match
+function BConn({ leftN, rightN, totalH, direction = 'ltr' }) {
+  const W = 14
+  const lines = []
+  // group left matches into pairs, each pair connects to one right match
+  const ratio = leftN / rightN  // how many left matches per right match
+  for (let r = 0; r < rightN; r++) {
+    // center Y of right match r
+    const rightSlotH = totalH / rightN
+    const rcy = r * rightSlotH + rightSlotH / 2
+
+    // center Ys of the left matches that feed into right match r
+    const leftStart = r * ratio
+    const leftSlotH = totalH / leftN
+    const lcy1 = leftStart * leftSlotH + leftSlotH / 2
+    const lcy2 = (leftStart + ratio - 1) * leftSlotH + leftSlotH / 2
+
+    if (direction === 'ltr') {
+      // left→right: from right edge of left matches to left edge of right match
+      lines.push(
+        <line key={`l1-${r}`} x1={0} y1={lcy1} x2={W/2} y2={lcy1} stroke="#CBD5E1" strokeWidth="1"/>,
+        <line key={`l2-${r}`} x1={0} y1={lcy2} x2={W/2} y2={lcy2} stroke="#CBD5E1" strokeWidth="1"/>,
+        <line key={`v-${r}`}  x1={W/2} y1={lcy1} x2={W/2} y2={lcy2} stroke="#CBD5E1" strokeWidth="1"/>,
+        <line key={`r-${r}`}  x1={W/2} y1={rcy} x2={W} y2={rcy} stroke="#CBD5E1" strokeWidth="1"/>,
+      )
+    } else {
+      // right→left: mirrored
+      lines.push(
+        <line key={`l1-${r}`} x1={W} y1={lcy1} x2={W/2} y2={lcy1} stroke="#CBD5E1" strokeWidth="1"/>,
+        <line key={`l2-${r}`} x1={W} y1={lcy2} x2={W/2} y2={lcy2} stroke="#CBD5E1" strokeWidth="1"/>,
+        <line key={`v-${r}`}  x1={W/2} y1={lcy1} x2={W/2} y2={lcy2} stroke="#CBD5E1" strokeWidth="1"/>,
+        <line key={`r-${r}`}  x1={W/2} y1={rcy} x2={0} y2={rcy} stroke="#CBD5E1" strokeWidth="1"/>,
+      )
+    }
   }
   return (
-    <svg width="16" style={{ flexShrink: 0, alignSelf: 'stretch' }} viewBox={`0 0 16 ${totalHeight}`} preserveAspectRatio="none">
-      {paths}
+    <svg width={W} height={totalH} style={{ flexShrink: 0, display: 'block', marginTop: 20 }}>
+      {lines}
     </svg>
   )
 }
 
-function BPhaseCol({ matches, label, totalHeight, headerH }) {
+function BCol({ label, matches, totalH }) {
   return (
-    <div className="b-phase" style={{ height: totalHeight }}>
-      <div className="b-phase-hdr" style={{ height: headerH }}>{label}</div>
-      <div className="b-matches" style={{ height: totalHeight - headerH }}>
-        {matches.map(m => <BMatch key={m.id} m={m} isFinal={label === '🏆 Final'} />)}
+    <div style={{ display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+      <div className="b-phase-hdr" style={{ height: 20, marginBottom: 0 }}>{label}</div>
+      <div style={{ height: totalH, display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
+        {matches.map(m => <BMatch key={m.id} m={m} />)}
       </div>
     </div>
   )
@@ -853,12 +886,12 @@ function BPhaseCol({ matches, label, totalHeight, headerH }) {
 
 function MataMataTab() {
   const { r16, qf, sf, semi, final } = KNOCKOUT
-  const HEADER_H = 22
-  const TOTAL_H = r16.length / 2 * MATCH_H + HEADER_H  // 8 * 76 + 22 = 630
-
   const r16L = r16.slice(0,8),  r16R = r16.slice(8,16)
   const qfL  = qf.slice(0,4),   qfR  = qf.slice(4,8)
   const sfL  = sf.slice(0,2),   sfR  = sf.slice(2,4)
+
+  // Total content height — based on 8 matches with gaps
+  const TOTAL_H = colH(8)  // 8*66 + 7*4 = 556px
 
   return (
     <div>
@@ -870,32 +903,36 @@ function MataMataTab() {
         ← deslize para ver o chaveamento completo →
       </div>
       <div className="bracket-outer">
-        <div className="bracket" style={{ alignItems: 'flex-start' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', width: 'max-content', padding: '0 12px' }}>
+
           {/* ── LEFT SIDE ── */}
-          <BPhaseCol label="Rodada 16" matches={r16L} totalHeight={TOTAL_H} headerH={HEADER_H} />
-          <BConnSvg fromCount={8} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
-          <BPhaseCol label="Oitavas" matches={qfL} totalHeight={TOTAL_H} headerH={HEADER_H} />
-          <BConnSvg fromCount={4} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
-          <BPhaseCol label="Quartas" matches={sfL} totalHeight={TOTAL_H} headerH={HEADER_H} />
-          <BConnSvg fromCount={2} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
-          <BPhaseCol label="Semi" matches={semi.slice(0,1)} totalHeight={TOTAL_H} headerH={HEADER_H} />
-          <BConnSvg fromCount={1} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
+          <BCol label="Rodada 16" matches={r16L} totalH={TOTAL_H} />
+          <BConn leftN={8} rightN={4} totalH={TOTAL_H} direction="ltr" />
+          <BCol label="Oitavas" matches={qfL} totalH={TOTAL_H} />
+          <BConn leftN={4} rightN={2} totalH={TOTAL_H} direction="ltr" />
+          <BCol label="Quartas" matches={sfL} totalH={TOTAL_H} />
+          <BConn leftN={2} rightN={1} totalH={TOTAL_H} direction="ltr" />
+          <BCol label="Semi" matches={semi.slice(0,1)} totalH={TOTAL_H} />
+          <BConn leftN={1} rightN={1} totalH={TOTAL_H} direction="ltr" />
 
           {/* ── FINAL CENTER ── */}
-          <div className="b-phase" style={{ height: TOTAL_H, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div className="b-phase-hdr" style={{ color: '#15803D', textAlign: 'center' }}>🏆 Final</div>
-            <BMatch m={final[0]} isFinal />
+          <div style={{ display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+            <div className="b-phase-hdr" style={{ height: 20, color: '#15803D', textAlign: 'center' }}>🏆 Final</div>
+            <div style={{ height: TOTAL_H, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <BMatch m={final[0]} isFinal />
+            </div>
           </div>
 
           {/* ── RIGHT SIDE (mirrored) ── */}
-          <BConnSvg fromCount={1} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
-          <BPhaseCol label="Semi" matches={semi.slice(1,2)} totalHeight={TOTAL_H} headerH={HEADER_H} />
-          <BConnSvg fromCount={2} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
-          <BPhaseCol label="Quartas" matches={sfR} totalHeight={TOTAL_H} headerH={HEADER_H} />
-          <BConnSvg fromCount={4} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
-          <BPhaseCol label="Oitavas" matches={qfR} totalHeight={TOTAL_H} headerH={HEADER_H} />
-          <BConnSvg fromCount={8} totalHeight={TOTAL_H} headerOffset={HEADER_H} />
-          <BPhaseCol label="Rodada 16" matches={r16R} totalHeight={TOTAL_H} headerH={HEADER_H} />
+          <BConn leftN={1} rightN={1} totalH={TOTAL_H} direction="rtl" />
+          <BCol label="Semi" matches={semi.slice(1,2)} totalH={TOTAL_H} />
+          <BConn leftN={2} rightN={1} totalH={TOTAL_H} direction="rtl" />
+          <BCol label="Quartas" matches={sfR} totalH={TOTAL_H} />
+          <BConn leftN={4} rightN={2} totalH={TOTAL_H} direction="rtl" />
+          <BCol label="Oitavas" matches={qfR} totalH={TOTAL_H} />
+          <BConn leftN={8} rightN={4} totalH={TOTAL_H} direction="rtl" />
+          <BCol label="Rodada 16" matches={r16R} totalH={TOTAL_H} />
+
         </div>
       </div>
     </div>
