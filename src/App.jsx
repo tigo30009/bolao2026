@@ -752,38 +752,44 @@ function HistoryTab({ currentUser, picks }) {
 // ─── MATA-MATA TAB ────────────────────────────────────────────────────────────
 const KNOCKOUT = {
   r16: [
+    // ── LADO ESQUERDO (top) ──
     { id:'k1',  date:'28/06', home:{name:'África do Sul', flag:'🇿🇦'}, away:{name:'Canadá',     flag:'🇨🇦'}, result:null },
-    { id:'k2',  date:'29/06', home:{name:'Brasil',        flag:'🇧🇷'}, away:{name:'Japão',       flag:'🇯🇵'}, result:null },
-    { id:'k3',  date:'29/06', home:{name:'Alemanha',      flag:'🇩🇪'}, away:{name:'Paraguai',    flag:'🇵🇾'}, result:null },
     { id:'k4',  date:'29/06', home:{name:'Holanda',       flag:'🇳🇱'}, away:{name:'Marrocos',    flag:'🇲🇦'}, result:null },
-    { id:'k5',  date:'30/06', home:{name:'C. do Marfim',  flag:'🇨🇮'}, away:{name:'Noruega',     flag:'🇳🇴'}, result:null },
+    { id:'k3',  date:'29/06', home:{name:'Alemanha',      flag:'🇩🇪'}, away:{name:'Paraguai',    flag:'🇵🇾'}, result:null },
     { id:'k6',  date:'30/06', home:{name:'França',        flag:'🇫🇷'}, away:{name:'Suécia',      flag:'🇸🇪'}, result:null },
-    { id:'k7',  date:'30/06', home:{name:'México',        flag:'🇲🇽'}, away:{name:'Equador',     flag:'🇪🇨'}, result:null },
-    { id:'k8',  date:'01/07', home:{name:'Inglaterra',    flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, away:{name:'Congo (RD)',  flag:'🇨🇩'}, result:null },
-    { id:'k9',  date:'01/07', home:{name:'Bélgica',       flag:'🇧🇪'}, away:{name:'Senegal',     flag:'🇸🇳'}, result:null },
-    { id:'k10', date:'01/07', home:{name:'EUA',           flag:'🇺🇸'}, away:{name:'Bósnia',      flag:'🇧🇦'}, result:null },
     { id:'k11', date:'02/07', home:{name:'Espanha',       flag:'🇪🇸'}, away:{name:'Áustria',     flag:'🇦🇹'}, result:null },
     { id:'k12', date:'02/07', home:{name:'Portugal',      flag:'🇵🇹'}, away:{name:'Croácia',     flag:'🇭🇷'}, result:null },
-    { id:'k13', date:'03/07', home:{name:'Suíça',         flag:'🇨🇭'}, away:{name:'Argélia',     flag:'🇩🇿'}, result:null },
-    { id:'k14', date:'03/07', home:{name:'Austrália',     flag:'🇦🇺'}, away:{name:'Egito',       flag:'🇪🇬'}, result:null },
+    { id:'k10', date:'01/07', home:{name:'EUA',           flag:'🇺🇸'}, away:{name:'Bósnia',      flag:'🇧🇦'}, result:null },
+    { id:'k9',  date:'01/07', home:{name:'Bélgica',       flag:'🇧🇪'}, away:{name:'Senegal',     flag:'🇸🇳'}, result:null },
+    // ── LADO DIREITO (bottom) ──
+    { id:'k2',  date:'29/06', home:{name:'Brasil',        flag:'🇧🇷'}, away:{name:'Japão',       flag:'🇯🇵'}, result:null },
+    { id:'k5',  date:'30/06', home:{name:'C. do Marfim',  flag:'🇨🇮'}, away:{name:'Noruega',     flag:'🇳🇴'}, result:null },
+    { id:'k7',  date:'30/06', home:{name:'México',        flag:'🇲🇽'}, away:{name:'Equador',     flag:'🇪🇨'}, result:null },
+    { id:'k8',  date:'01/07', home:{name:'Inglaterra',    flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, away:{name:'Congo (RD)',  flag:'🇨🇩'}, result:null },
     { id:'k15', date:'03/07', home:{name:'Argentina',     flag:'🇦🇷'}, away:{name:'Cabo Verde',  flag:'🇨🇻'}, result:null },
+    { id:'k14', date:'03/07', home:{name:'Austrália',     flag:'🇦🇺'}, away:{name:'Egito',       flag:'🇪🇬'}, result:null },
+    { id:'k13', date:'03/07', home:{name:'Suíça',         flag:'🇨🇭'}, away:{name:'Argélia',     flag:'🇩🇿'}, result:null },
     { id:'k16', date:'03/07', home:{name:'Colômbia',      flag:'🇨🇴'}, away:{name:'Gana',        flag:'🇬🇭'}, result:null },
   ],
   qf: [
-    { id:'q1', date:'04/07', home:{name:'Venc. K1',  flag:''}, away:{name:'Venc. K4',  flag:''}, result:null },
-    { id:'q2', date:'04/07', home:{name:'Venc. K3',  flag:''}, away:{name:'Venc. K6',  flag:''}, result:null },
-    { id:'q3', date:'06/07', home:{name:'Venc. K10', flag:''}, away:{name:'Venc. K9',  flag:''}, result:null },
-    { id:'q4', date:'06/07', home:{name:'Venc. K11', flag:''}, away:{name:'Venc. K12', flag:''}, result:null },
-    { id:'q5', date:'05/07', home:{name:'Venc. K2',  flag:''}, away:{name:'Venc. K5',  flag:''}, result:null },
-    { id:'q6', date:'05/07', home:{name:'Venc. K7',  flag:''}, away:{name:'Venc. K8',  flag:''}, result:null },
-    { id:'q7', date:'07/07', home:{name:'Venc. K15', flag:''}, away:{name:'Venc. K14', flag:''}, result:null },
-    { id:'q8', date:'07/07', home:{name:'Venc. K13', flag:''}, away:{name:'Venc. K16', flag:''}, result:null },
+    // ── LADO ESQUERDO ──
+    { id:'q1', date:'04/07', home:{name:'Venc. K1',  flag:''}, away:{name:'Venc. K4',  flag:''}, result:null }, // Oit.1
+    { id:'q2', date:'04/07', home:{name:'Venc. K3',  flag:''}, away:{name:'Venc. K6',  flag:''}, result:null }, // Oit.2
+    { id:'q3', date:'06/07', home:{name:'Venc. K11', flag:''}, away:{name:'Venc. K12', flag:''}, result:null }, // Oit.3
+    { id:'q4', date:'06/07', home:{name:'Venc. K10', flag:''}, away:{name:'Venc. K9',  flag:''}, result:null }, // Oit.4
+    // ── LADO DIREITO ──
+    { id:'q5', date:'05/07', home:{name:'Venc. K2',  flag:''}, away:{name:'Venc. K5',  flag:''}, result:null }, // Oit.5
+    { id:'q6', date:'05/07', home:{name:'Venc. K7',  flag:''}, away:{name:'Venc. K8',  flag:''}, result:null }, // Oit.6
+    { id:'q7', date:'07/07', home:{name:'Venc. K15', flag:''}, away:{name:'Venc. K14', flag:''}, result:null }, // Oit.7
+    { id:'q8', date:'07/07', home:{name:'Venc. K13', flag:''}, away:{name:'Venc. K16', flag:''}, result:null }, // Oit.8
   ],
   sf: [
-    { id:'s1', date:'09/07', home:{name:'Venc. Oit.1', flag:''}, away:{name:'Venc. Oit.2', flag:''}, result:null },
-    { id:'s2', date:'10/07', home:{name:'Venc. Oit.3', flag:''}, away:{name:'Venc. Oit.4', flag:''}, result:null },
-    { id:'s3', date:'11/07', home:{name:'Venc. Oit.5', flag:''}, away:{name:'Venc. Oit.6', flag:''}, result:null },
-    { id:'s4', date:'11/07', home:{name:'Venc. Oit.7', flag:''}, away:{name:'Venc. Oit.8', flag:''}, result:null },
+    // ── LADO ESQUERDO ──
+    { id:'s1', date:'09/07', home:{name:'Venc. Oit.1', flag:''}, away:{name:'Venc. Oit.2', flag:''}, result:null }, // Qrt.1
+    { id:'s2', date:'10/07', home:{name:'Venc. Oit.3', flag:''}, away:{name:'Venc. Oit.4', flag:''}, result:null }, // Qrt.2
+    // ── LADO DIREITO ──
+    { id:'s3', date:'11/07', home:{name:'Venc. Oit.5', flag:''}, away:{name:'Venc. Oit.6', flag:''}, result:null }, // Qrt.3
+    { id:'s4', date:'11/07', home:{name:'Venc. Oit.7', flag:''}, away:{name:'Venc. Oit.8', flag:''}, result:null }, // Qrt.4
   ],
   semi: [
     { id:'se1', date:'14/07', home:{name:'Venc. Qrt.1', flag:''}, away:{name:'Venc. Qrt.2', flag:''}, result:null },
