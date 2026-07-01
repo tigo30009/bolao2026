@@ -433,11 +433,76 @@ export default function App() {
   )
 }
 
+
+// ─── MATA-MATA TAB ────────────────────────────────────────────────────────────
+const KNOCKOUT = {
+  r16: [
+    // ── LADO ESQUERDO (top) ──
+    { id:'k1',  date:'28/06', home:{name:'África do Sul', flag:'🇿🇦'}, away:{name:'Canadá',     flag:'🇨🇦'}, result:{ home: 0, away: 1 } },
+    { id:'k4',  date:'29/06', home:{name:'Holanda',       flag:'🇳🇱'}, away:{name:'Marrocos',    flag:'🇲🇦'}, result:{ home: 1, away: 1, pen: '2-3', winner: 'away' } },
+    { id:'k3',  date:'29/06', home:{name:'Alemanha',      flag:'🇩🇪'}, away:{name:'Paraguai',    flag:'🇵🇾'}, result:{ home: 1, away: 1, pen: '3-4', winner: 'away' } },
+    { id:'k6',  date:'30/06', home:{name:'França',        flag:'🇫🇷'}, away:{name:'Suécia',      flag:'🇸🇪'}, result:{ home: 3, away: 0 } },
+    { id:'k11', date:'02/07', home:{name:'Espanha',       flag:'🇪🇸'}, away:{name:'Áustria',     flag:'🇦🇹'}, result:null },
+    { id:'k12', date:'02/07', home:{name:'Portugal',      flag:'🇵🇹'}, away:{name:'Croácia',     flag:'🇭🇷'}, result:null },
+    { id:'k10', date:'01/07', home:{name:'EUA',           flag:'🇺🇸'}, away:{name:'Bósnia',      flag:'🇧🇦'}, result:null },
+    { id:'k9',  date:'01/07', home:{name:'Bélgica',       flag:'🇧🇪'}, away:{name:'Senegal',     flag:'🇸🇳'}, result:null },
+    // ── LADO DIREITO (bottom) ──
+    { id:'k2',  date:'29/06', home:{name:'Brasil',        flag:'🇧🇷'}, away:{name:'Japão',       flag:'🇯🇵'}, result:{ home: 2, away: 1 } },
+    { id:'k5',  date:'30/06', home:{name:'C. do Marfim',  flag:'🇨🇮'}, away:{name:'Noruega',     flag:'🇳🇴'}, result:{ home: 1, away: 2 } },
+    { id:'k7',  date:'30/06', home:{name:'México',        flag:'🇲🇽'}, away:{name:'Equador',     flag:'🇪🇨'}, result:null },
+    { id:'k8',  date:'01/07', home:{name:'Inglaterra',    flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, away:{name:'Congo (RD)',  flag:'🇨🇩'}, result:null },
+    { id:'k15', date:'03/07', home:{name:'Argentina',     flag:'🇦🇷'}, away:{name:'Cabo Verde',  flag:'🇨🇻'}, result:null },
+    { id:'k14', date:'03/07', home:{name:'Austrália',     flag:'🇦🇺'}, away:{name:'Egito',       flag:'🇪🇬'}, result:null },
+    { id:'k13', date:'03/07', home:{name:'Suíça',         flag:'🇨🇭'}, away:{name:'Argélia',     flag:'🇩🇿'}, result:null },
+    { id:'k16', date:'03/07', home:{name:'Colômbia',      flag:'🇨🇴'}, away:{name:'Gana',        flag:'🇬🇭'}, result:null },
+  ],
+  qf: [
+    // ── LADO ESQUERDO ──
+    { id:'q1', date:'04/07', home:{name:'Venc. K1',  flag:''}, away:{name:'Venc. K4',  flag:''}, result:null }, // Oit.1
+    { id:'q2', date:'04/07', home:{name:'Venc. K3',  flag:''}, away:{name:'Venc. K6',  flag:''}, result:null }, // Oit.2
+    { id:'q3', date:'06/07', home:{name:'Venc. K11', flag:''}, away:{name:'Venc. K12', flag:''}, result:null }, // Oit.3
+    { id:'q4', date:'06/07', home:{name:'Venc. K10', flag:''}, away:{name:'Venc. K9',  flag:''}, result:null }, // Oit.4
+    // ── LADO DIREITO ──
+    { id:'q5', date:'05/07', home:{name:'Venc. K2',  flag:''}, away:{name:'Venc. K5',  flag:''}, result:null }, // Oit.5
+    { id:'q6', date:'05/07', home:{name:'Venc. K7',  flag:''}, away:{name:'Venc. K8',  flag:''}, result:null }, // Oit.6
+    { id:'q7', date:'07/07', home:{name:'Venc. K15', flag:''}, away:{name:'Venc. K14', flag:''}, result:null }, // Oit.7
+    { id:'q8', date:'07/07', home:{name:'Venc. K13', flag:''}, away:{name:'Venc. K16', flag:''}, result:null }, // Oit.8
+  ],
+  sf: [
+    // ── LADO ESQUERDO ──
+    { id:'s1', date:'09/07', home:{name:'Venc. Oit.1', flag:''}, away:{name:'Venc. Oit.2', flag:''}, result:null }, // Qrt.1
+    { id:'s2', date:'10/07', home:{name:'Venc. Oit.3', flag:''}, away:{name:'Venc. Oit.4', flag:''}, result:null }, // Qrt.2
+    // ── LADO DIREITO ──
+    { id:'s3', date:'11/07', home:{name:'Venc. Oit.5', flag:''}, away:{name:'Venc. Oit.6', flag:''}, result:null }, // Qrt.3
+    { id:'s4', date:'11/07', home:{name:'Venc. Oit.7', flag:''}, away:{name:'Venc. Oit.8', flag:''}, result:null }, // Qrt.4
+  ],
+  semi: [
+    { id:'se1', date:'14/07', home:{name:'Venc. Qrt.1', flag:''}, away:{name:'Venc. Qrt.2', flag:''}, result:null },
+    { id:'se2', date:'15/07', home:{name:'Venc. Qrt.3', flag:''}, away:{name:'Venc. Qrt.4', flag:''}, result:null },
+  ],
+  final: [
+    { id:'f1', date:'19/07', home:{name:'Venc. Semi 1', flag:''}, away:{name:'Venc. Semi 2', flag:''}, result:null },
+  ],
+}
+
 // ─── PICKS TAB ───────────────────────────────────────────────────────────────
 function PicksTab({ currentUser, picks, savePick }) {
+  // Monta pseudo-rodada das eliminatórias a partir do KNOCKOUT
+  const knockoutRound = {
+    id: 99,
+    label: "Eliminatórias",
+    startDate: "2026-06-28",
+    matches: [
+      ...KNOCKOUT.r16, ...KNOCKOUT.qf, ...KNOCKOUT.sf,
+      ...KNOCKOUT.semi, ...KNOCKOUT.final,
+    ].map(m => ({ ...m, group: "–", time: "", city: m.home.name !== '' ? "" : "" })),
+  }
+
+  const allRounds = [...ROUNDS, knockoutRound]
+
   const [draft, setDraft] = useState(() => {
     const d = {}
-    ROUNDS.forEach(r => r.matches.forEach(m => {
+    allRounds.forEach(r => r.matches.forEach(m => {
       const p = (picks[currentUser.id] || {})[m.id]
       if (p) d[m.id] = { ...p }
     }))
@@ -446,8 +511,12 @@ function PicksTab({ currentUser, picks, savePick }) {
   const [saving, setSaving] = useState({})
   const [view, setView] = useState("current")
 
-  const pastRounds    = ROUNDS.filter(r => isRoundFinished(r))
-  const currentRounds = ROUNDS.filter(r => !isRoundFinished(r))
+  function isKnockoutRoundFinished(round) {
+    return round.matches.every(m => !!m.result)
+  }
+
+  const pastRounds    = allRounds.filter(r => r.id === 99 ? isKnockoutRoundFinished(r) : isRoundFinished(r))
+  const currentRounds = allRounds.filter(r => r.id === 99 ? !isKnockoutRoundFinished(r) : !isRoundFinished(r))
   const visibleRounds = view === "current" ? currentRounds : pastRounds
 
   function setScore(matchId, side, val) {
@@ -483,45 +552,51 @@ function PicksTab({ currentUser, picks, savePick }) {
 
       {visibleRounds.map(round => {
         const open = isRoundOpen(round.startDate)
+        const isKnockout = round.id === 99
         return (
           <div key={round.id} className="card" style={{ marginBottom: 16 }}>
             <div className="round-header">
               <span className="round-title">{round.label}</span>
               <span className={`round-badge ${open ? "badge-open" : "badge-locked"}`}>
-                {open ? (isRoundFinished(round) ? "Encerrada" : "Aberta") : `Abre ${formatDateBR(round.startDate)}`}
+                {open
+                  ? (isKnockout ? isKnockoutRoundFinished(round) : isRoundFinished(round)) ? "Encerrada" : "Aberta"
+                  : `Abre ${formatDateBR(round.startDate)}`}
               </span>
             </div>
             {round.matches.map(match => {
-              const savedPick    = (picks[currentUser.id] || {})[match.id]
-              const p            = draft[match.id] || {}
-              const pts          = savedPick ? calcPoints(savedPick, match.result) : null
-              const hasResult    = !!match.result
-              const pickAllowed  = isPickAllowed(match) && !savedPick
-              const pickLocked   = !pickAllowed
-              const showSaveBtn  = !hasResult && !savedPick
-              const isDone       = hasResult && !!savedPick
-              const isSaving     = saving[match.id]
-              const hrsToLock    = hoursUntilLock(match)
-              const closingSoon  = !hasResult && !savedPick && hrsToLock !== null && hrsToLock <= 2 && hrsToLock > 0
+              const savedPick   = (picks[currentUser.id] || {})[match.id]
+              const p           = draft[match.id] || {}
+              // para pênaltis, calcular pontos só pelo placar regulamentar
+              const resultForPts = match.result ? { home: match.result.home, away: match.result.away } : null
+              const pts         = savedPick ? calcPoints(savedPick, resultForPts) : null
+              const hasResult   = !!match.result
+              const pickAllowed = isPickAllowed(match) && !savedPick
+              const pickLocked  = !pickAllowed
+              const showSaveBtn = !hasResult && !savedPick
+              const isDone      = hasResult && !!savedPick
+              const isSaving    = saving[match.id]
+              const hrsToLock   = hoursUntilLock(match)
+              const closingSoon = !hasResult && !savedPick && hrsToLock !== null && hrsToLock <= 2 && hrsToLock > 0
+              const penInfo     = match.result?.pen ? ` (P: ${match.result.pen})` : ''
 
               return (
                 <div key={match.id} className={`match-item${isDone ? " match-done" : ""}`}>
                   <div className="match-meta">
-                    <span className="group-tag">Grupo {match.group}</span>
-                    <span className="match-meta-dot" /><span>{match.date} · {match.time}</span>
-                    <span className="match-meta-dot" /><span>{match.city}</span>
+                    {!isKnockout && <><span className="group-tag">Grupo {match.group}</span><span className="match-meta-dot" /></>}
+                    <span>{match.date}{match.time ? ` · ${match.time}` : ''}</span>
+                    {match.city && <><span className="match-meta-dot" /><span>{match.city}</span></>}
                   </div>
                   <div className="match-teams">
-                    <span className="team-flag">{FLAGS[match.home]}</span>
+                    <span className="team-flag">{FLAGS[match.home] || ''}</span>
                     <span className="team-name">{match.home}</span>
                     <span className="vs-badge">vs</span>
                     <span className="team-name away">{match.away}</span>
-                    <span className="team-flag">{FLAGS[match.away]}</span>
+                    <span className="team-flag">{FLAGS[match.away] || ''}</span>
                   </div>
                   {hasResult && (
                     <div className="real-result-row">
                       <span className="real-result-label">Resultado real</span>
-                      <span className="real-score">{match.result.home} – {match.result.away}</span>
+                      <span className="real-score">{match.result.home} – {match.result.away}{penInfo}</span>
                     </div>
                   )}
                   <div className="pick-row">
@@ -547,7 +622,6 @@ function PicksTab({ currentUser, picks, savePick }) {
                       ⚠️ Fecha em {Math.floor(hrsToLock)}h — palpite logo!
                     </div>
                   )}
-
                   {showSaveBtn && pickAllowed && (
                     <button className="save-btn default" onClick={() => handleSave(match.id)}
                       disabled={isSaving || p.home === "" || p.away === "" || p.home == null || p.away == null}>
@@ -555,7 +629,7 @@ function PicksTab({ currentUser, picks, savePick }) {
                     </button>
                   )}
                   {showSaveBtn && !pickAllowed && !hasResult && (
-                    <div className="locked-notice">🔒 Prazo encerrado — palpites fechados 8h antes do jogo</div>
+                    <div className="locked-notice">🔒 Prazo encerrado — palpites fechados 1h antes do jogo</div>
                   )}
                   {savedPick && !hasResult && (
                     <button className="save-btn locked" disabled>✓ Palpite salvo</button>
@@ -575,85 +649,116 @@ function PicksTab({ currentUser, picks, savePick }) {
 // ─── GALERA TAB ──────────────────────────────────────────────────────────────
 function GaleraTab({ currentUser, picks, users }) {
   const [selectedRound, setSelectedRound] = useState(0)
-  // Galera mostra todas as rodadas que têm pelo menos 1 palpite registrado, ou que já abriram
-  const visibleRounds = ROUNDS.filter(r =>
+
+  const allKnockoutMatches = [
+    ...KNOCKOUT.r16, ...KNOCKOUT.qf, ...KNOCKOUT.sf,
+    ...KNOCKOUT.semi, ...KNOCKOUT.final,
+  ]
+
+  const visibleGroupRounds = ROUNDS.filter(r =>
     isRoundOpen(r.startDate) || r.matches.some(m => users.some(u => (picks[u.id] || {})[m.id]))
   )
-  const openRounds = visibleRounds
-  const firstMatchId = openRounds[0]?.matches[0]?.id
+
+  const knockoutVisible = isRoundOpen("2026-06-28") ||
+    allKnockoutMatches.some(m => users.some(u => (picks[u.id] || {})[m.id]))
+
+  const knockoutSection = knockoutVisible ? [{
+    id: 99,
+    label: "Eliminatórias",
+    matches: allKnockoutMatches,
+  }] : []
+
+  const allSections = [...visibleGroupRounds, ...knockoutSection]
+  const firstMatchId = allSections[0]?.matches[0]?.id
   const [expandedMatch, setExpandedMatch] = useState(firstMatchId || null)
 
-  const filteredRounds = selectedRound === 0 ? openRounds : openRounds.filter(r => r.id === selectedRound)
+  const filteredSections = selectedRound === 0
+    ? allSections
+    : allSections.filter(r => r.id === selectedRound)
 
-  if (!openRounds.length) return (
+  if (!allSections.length) return (
     <div className="empty-state">
       <div className="empty-state-icon">🔒</div>
       <div className="empty-state-text">Os palpites da galera ficam visíveis quando a rodada abre.</div>
     </div>
   )
 
+  function MatchItem({ match }) {
+    const isExpanded   = expandedMatch === match.id
+    const pickersCount = users.filter(u => (picks[u.id] || {})[match.id]).length
+    const pickers      = users.filter(u => (picks[u.id] || {})[match.id])
+      .sort((a, b) => a.id === currentUser.id ? -1 : b.id === currentUser.id ? 1 : a.name.localeCompare(b.name))
+    const resultDisplay = match.result
+      ? match.result.pen
+        ? `${match.result.home}–${match.result.away} (P)`
+        : `${match.result.home}–${match.result.away}`
+      : null
+
+    return (
+      <div className="galera-match">
+        <div className="galera-match-header" onClick={() => setExpandedMatch(isExpanded ? null : match.id)}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="galera-match-title">
+              {FLAGS[match.home] || ''} {match.home} vs {match.away} {FLAGS[match.away] || ''}
+            </div>
+            <div className="galera-match-sub">{match.date}{match.city ? ` · ${match.city}` : ''}</div>
+          </div>
+          <div className="galera-match-right">
+            {resultDisplay
+              ? <span className="galera-result-pill">{resultDisplay}</span>
+              : <span className="galera-result-pill pending">Aguardando</span>}
+            {pickersCount > 0 && <span className="galera-count-badge">{pickersCount}</span>}
+            <span className={`chevron-icon ${isExpanded ? "open" : ""}`}>⌄</span>
+          </div>
+        </div>
+        {isExpanded && (
+          <div className="galera-picks-list">
+            {pickers.length === 0
+              ? <div style={{padding:"16px 14px",fontSize:13,color:"var(--text-muted)",textAlign:"center"}}>Nenhum palpite registrado.</div>
+              : pickers.map(user => {
+                  const p = (picks[user.id] || {})[match.id]
+                  const result = match.result ? { home: match.result.home, away: match.result.away } : null
+                  const pts = calcPoints(p, result)
+                  const isMe = user.id === currentUser.id
+                  const rowClass = pts === 5 ? "pts-5" : pts === 1 ? "pts-1" : pts === 0 ? "pts-0" : ""
+                  return (
+                    <div key={user.id} className={`galera-pick-row ${rowClass} ${isMe ? "pts-me" : ""}`}>
+                      <div className="galera-avatar" style={{ background: stringColor(user.name) }}>{initials(user.name)}</div>
+                      <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 4 }}>
+                        <span className="galera-user-name">{user.name}</span>
+                        {isMe && <span className="galera-you-tag">você</span>}
+                      </div>
+                      <span className="galera-score">{p.home}–{p.away}</span>
+                      <GaleraPtsBadge pts={pts} />
+                    </div>
+                  )
+                })
+            }
+          </div>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div>
       <div className="round-filter">
         <button className={`round-filter-btn ${selectedRound === 0 ? "active" : ""}`} onClick={() => setSelectedRound(0)}>Todas</button>
-        {openRounds.map(r => (
+        {visibleGroupRounds.map(r => (
           <button key={r.id} className={`round-filter-btn ${selectedRound === r.id ? "active" : ""}`} onClick={() => setSelectedRound(r.id)}>
             {r.id}ª Rodada
           </button>
         ))}
+        {knockoutVisible && (
+          <button className={`round-filter-btn ${selectedRound === 99 ? "active" : ""}`} onClick={() => setSelectedRound(99)}>
+            Eliminatórias
+          </button>
+        )}
       </div>
-      {filteredRounds.map(round => (
-        <div key={round.id} className="card" style={{ marginBottom: 16 }}>
-          <div className="round-header"><span className="round-title">{round.label}</span></div>
-          {round.matches.map(match => {
-            const isExpanded   = expandedMatch === match.id
-            const pickersCount = users.filter(u => (picks[u.id] || {})[match.id]).length
-            const pickers      = users.filter(u => (picks[u.id] || {})[match.id])
-              .sort((a, b) => a.id === currentUser.id ? -1 : b.id === currentUser.id ? 1 : a.name.localeCompare(b.name))
-            return (
-              <div key={match.id} className="galera-match">
-                <div className="galera-match-header" onClick={() => setExpandedMatch(isExpanded ? null : match.id)}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div className="galera-match-title">
-                      {FLAGS[match.home]} {match.home} vs {match.away} {FLAGS[match.away]}
-                    </div>
-                    <div className="galera-match-sub">{match.date} · {match.city}</div>
-                  </div>
-                  <div className="galera-match-right">
-                    {match.result
-                      ? <span className="galera-result-pill">{match.result.home}–{match.result.away}</span>
-                      : <span className="galera-result-pill pending">Aguardando</span>}
-                    {pickersCount > 0 && <span className="galera-count-badge">{pickersCount}</span>}
-                    <span className={`chevron-icon ${isExpanded ? "open" : ""}`}>⌄</span>
-                  </div>
-                </div>
-                {isExpanded && (
-                  <div className="galera-picks-list">
-                    {pickers.length === 0
-                      ? <div className="galera-no-picks" style={{padding:"16px 14px",fontSize:13,color:"var(--text-muted)",textAlign:"center"}}>Nenhum palpite registrado.</div>
-                      : pickers.map(user => {
-                          const p   = (picks[user.id] || {})[match.id]
-                          const pts = calcPoints(p, match.result)
-                          const isMe = user.id === currentUser.id
-                          const rowClass = pts === 5 ? "pts-5" : pts === 1 ? "pts-1" : pts === 0 ? "pts-0" : ""
-                          return (
-                            <div key={user.id} className={`galera-pick-row ${rowClass} ${isMe ? "pts-me" : ""}`}>
-                              <div className="galera-avatar" style={{ background: stringColor(user.name) }}>{initials(user.name)}</div>
-                              <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 4 }}>
-                                <span className="galera-user-name">{user.name}</span>
-                                {isMe && <span className="galera-you-tag">você</span>}
-                              </div>
-                              <span className="galera-score">{p.home}–{p.away}</span>
-                              <GaleraPtsBadge pts={pts} />
-                            </div>
-                          )
-                        })
-                    }
-                  </div>
-                )}
-              </div>
-            )
-          })}
+      {filteredSections.map(section => (
+        <div key={section.id} className="card" style={{ marginBottom: 16 }}>
+          <div className="round-header"><span className="round-title">{section.label}</span></div>
+          {section.matches.map(match => <MatchItem key={match.id} match={match} />)}
         </div>
       ))}
     </div>
@@ -790,56 +895,6 @@ function HistoryTab({ currentUser, picks }) {
   )
 }
 
-// ─── MATA-MATA TAB ────────────────────────────────────────────────────────────
-const KNOCKOUT = {
-  r16: [
-    // ── LADO ESQUERDO (top) ──
-    { id:'k1',  date:'28/06', home:{name:'África do Sul', flag:'🇿🇦'}, away:{name:'Canadá',     flag:'🇨🇦'}, result:{ home: 0, away: 1 } },
-    { id:'k4',  date:'29/06', home:{name:'Holanda',       flag:'🇳🇱'}, away:{name:'Marrocos',    flag:'🇲🇦'}, result:{ home: 1, away: 1, pen: '2-3', winner: 'away' } },
-    { id:'k3',  date:'29/06', home:{name:'Alemanha',      flag:'🇩🇪'}, away:{name:'Paraguai',    flag:'🇵🇾'}, result:{ home: 1, away: 1, pen: '3-4', winner: 'away' } },
-    { id:'k6',  date:'30/06', home:{name:'França',        flag:'🇫🇷'}, away:{name:'Suécia',      flag:'🇸🇪'}, result:{ home: 3, away: 0 } },
-    { id:'k11', date:'02/07', home:{name:'Espanha',       flag:'🇪🇸'}, away:{name:'Áustria',     flag:'🇦🇹'}, result:null },
-    { id:'k12', date:'02/07', home:{name:'Portugal',      flag:'🇵🇹'}, away:{name:'Croácia',     flag:'🇭🇷'}, result:null },
-    { id:'k10', date:'01/07', home:{name:'EUA',           flag:'🇺🇸'}, away:{name:'Bósnia',      flag:'🇧🇦'}, result:null },
-    { id:'k9',  date:'01/07', home:{name:'Bélgica',       flag:'🇧🇪'}, away:{name:'Senegal',     flag:'🇸🇳'}, result:null },
-    // ── LADO DIREITO (bottom) ──
-    { id:'k2',  date:'29/06', home:{name:'Brasil',        flag:'🇧🇷'}, away:{name:'Japão',       flag:'🇯🇵'}, result:{ home: 2, away: 1 } },
-    { id:'k5',  date:'30/06', home:{name:'C. do Marfim',  flag:'🇨🇮'}, away:{name:'Noruega',     flag:'🇳🇴'}, result:{ home: 1, away: 2 } },
-    { id:'k7',  date:'30/06', home:{name:'México',        flag:'🇲🇽'}, away:{name:'Equador',     flag:'🇪🇨'}, result:null },
-    { id:'k8',  date:'01/07', home:{name:'Inglaterra',    flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, away:{name:'Congo (RD)',  flag:'🇨🇩'}, result:null },
-    { id:'k15', date:'03/07', home:{name:'Argentina',     flag:'🇦🇷'}, away:{name:'Cabo Verde',  flag:'🇨🇻'}, result:null },
-    { id:'k14', date:'03/07', home:{name:'Austrália',     flag:'🇦🇺'}, away:{name:'Egito',       flag:'🇪🇬'}, result:null },
-    { id:'k13', date:'03/07', home:{name:'Suíça',         flag:'🇨🇭'}, away:{name:'Argélia',     flag:'🇩🇿'}, result:null },
-    { id:'k16', date:'03/07', home:{name:'Colômbia',      flag:'🇨🇴'}, away:{name:'Gana',        flag:'🇬🇭'}, result:null },
-  ],
-  qf: [
-    // ── LADO ESQUERDO ──
-    { id:'q1', date:'04/07', home:{name:'Venc. K1',  flag:''}, away:{name:'Venc. K4',  flag:''}, result:null }, // Oit.1
-    { id:'q2', date:'04/07', home:{name:'Venc. K3',  flag:''}, away:{name:'Venc. K6',  flag:''}, result:null }, // Oit.2
-    { id:'q3', date:'06/07', home:{name:'Venc. K11', flag:''}, away:{name:'Venc. K12', flag:''}, result:null }, // Oit.3
-    { id:'q4', date:'06/07', home:{name:'Venc. K10', flag:''}, away:{name:'Venc. K9',  flag:''}, result:null }, // Oit.4
-    // ── LADO DIREITO ──
-    { id:'q5', date:'05/07', home:{name:'Venc. K2',  flag:''}, away:{name:'Venc. K5',  flag:''}, result:null }, // Oit.5
-    { id:'q6', date:'05/07', home:{name:'Venc. K7',  flag:''}, away:{name:'Venc. K8',  flag:''}, result:null }, // Oit.6
-    { id:'q7', date:'07/07', home:{name:'Venc. K15', flag:''}, away:{name:'Venc. K14', flag:''}, result:null }, // Oit.7
-    { id:'q8', date:'07/07', home:{name:'Venc. K13', flag:''}, away:{name:'Venc. K16', flag:''}, result:null }, // Oit.8
-  ],
-  sf: [
-    // ── LADO ESQUERDO ──
-    { id:'s1', date:'09/07', home:{name:'Venc. Oit.1', flag:''}, away:{name:'Venc. Oit.2', flag:''}, result:null }, // Qrt.1
-    { id:'s2', date:'10/07', home:{name:'Venc. Oit.3', flag:''}, away:{name:'Venc. Oit.4', flag:''}, result:null }, // Qrt.2
-    // ── LADO DIREITO ──
-    { id:'s3', date:'11/07', home:{name:'Venc. Oit.5', flag:''}, away:{name:'Venc. Oit.6', flag:''}, result:null }, // Qrt.3
-    { id:'s4', date:'11/07', home:{name:'Venc. Oit.7', flag:''}, away:{name:'Venc. Oit.8', flag:''}, result:null }, // Qrt.4
-  ],
-  semi: [
-    { id:'se1', date:'14/07', home:{name:'Venc. Qrt.1', flag:''}, away:{name:'Venc. Qrt.2', flag:''}, result:null },
-    { id:'se2', date:'15/07', home:{name:'Venc. Qrt.3', flag:''}, away:{name:'Venc. Qrt.4', flag:''}, result:null },
-  ],
-  final: [
-    { id:'f1', date:'19/07', home:{name:'Venc. Semi 1', flag:''}, away:{name:'Venc. Semi 2', flag:''}, result:null },
-  ],
-}
 
 // Match card: date(18) + team(24) + team(24) = 66px
 const MH = 66  // match height px
