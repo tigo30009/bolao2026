@@ -324,6 +324,7 @@ export default function App() {
   function getUserStats(userId) {
     const up = picks[userId] || {}
     let total = 0, exact = 0, outcome = 0, pending = 0
+    // fase de grupos
     ROUNDS.forEach(r => r.matches.forEach(m => {
       const p = up[m.id]; if (!p) return
       const pts = calcPoints(p, m.result)
@@ -331,6 +332,23 @@ export default function App() {
       else if (pts === 5) { total += 5; exact++ }
       else if (pts === 1) { total += 1; outcome++ }
     }))
+    // eliminatórias — todos os jogos do KNOCKOUT
+    const allKnockout = [
+      ...KNOCKOUT.r16,
+      ...KNOCKOUT.qf,
+      ...KNOCKOUT.sf,
+      ...KNOCKOUT.semi,
+      ...KNOCKOUT.final,
+    ]
+    allKnockout.forEach(m => {
+      const p = up[m.id]; if (!p) return
+      // pênaltis: resultado para pontuação é o placar do tempo regulamentar
+      const result = m.result ? { home: m.result.home, away: m.result.away } : null
+      const pts = calcPoints(p, result)
+      if (pts === null) pending++
+      else if (pts === 5) { total += 5; exact++ }
+      else if (pts === 1) { total += 1; outcome++ }
+    })
     return { total, exact, outcome, pending }
   }
 
@@ -691,60 +709,83 @@ function RankingTab({ ranking, currentUser }) {
 // ─── HISTORY TAB ─────────────────────────────────────────────────────────────
 function HistoryTab({ currentUser, picks }) {
   const userPicks = picks[currentUser.id] || {}
-  const made = ROUNDS.flatMap(r => r.matches).filter(m => userPicks[m.id])
-  if (!made.length) return (
+
+  const allKnockout = [
+    ...KNOCKOUT.r16, ...KNOCKOUT.qf, ...KNOCKOUT.sf,
+    ...KNOCKOUT.semi, ...KNOCKOUT.final,
+  ]
+
+  const groupMade = ROUNDS.flatMap(r => r.matches).filter(m => userPicks[m.id])
+  const knockMade = allKnockout.filter(m => userPicks[m.id])
+
+  if (!groupMade.length && !knockMade.length) return (
     <div className="empty-state">
       <div className="empty-state-icon">📋</div>
       <div className="empty-state-text">Você ainda não fez nenhum palpite.<br />Vá para Palpites para começar!</div>
     </div>
   )
+
+  function MatchRow({ match, city }) {
+    const p = userPicks[match.id]
+    const result = match.result ? { home: match.result.home, away: match.result.away } : null
+    const pts = calcPoints(p, result)
+    const penInfo = match.result?.pen ? ` (P: ${match.result.pen})` : ''
+    return (
+      <div className="history-match">
+        <div className="history-header">
+          <div>
+            <div className="history-game">{FLAGS[match.home] || ''} {match.home} vs {match.away} {FLAGS[match.away] || ''}</div>
+            <div className="history-date">{match.date}{city ? ` · ${city}` : ''}</div>
+          </div>
+          <PtsChip pts={pts} />
+        </div>
+        <div className="history-scores">
+          <div className="score-col">
+            <span className="score-col-label">Seu palpite</span>
+            <span className={`score-col-val ${pts !== null ? "pick-done" : "pick-pending"}`}>{p.home} – {p.away}</span>
+          </div>
+          {match.result ? (
+            <>
+              <div style={{ width: 1, background: "var(--border)", alignSelf: "stretch" }} />
+              <div className="score-col">
+                <span className="score-col-label">Real</span>
+                <span className="score-col-val real">{match.result.home} – {match.result.away}{penInfo}</span>
+              </div>
+            </>
+          ) : (
+            <div className="score-col">
+              <span className="score-col-label">Real</span>
+              <span className="score-col-val pick-pending">Aguard.</span>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div>
       <div className="section-hd"><span className="section-hd-title">Seus palpites</span><div className="section-hd-line" /></div>
+
+      {/* Fase de grupos */}
       {ROUNDS.map(round => {
         const roundPicks = round.matches.filter(m => userPicks[m.id])
         if (!roundPicks.length) return null
         return (
           <div key={round.id} className="card" style={{ marginBottom: 14 }}>
             <div className="round-header"><span className="round-title">{round.label}</span></div>
-            {roundPicks.map(match => {
-              const p = userPicks[match.id]
-              const pts = calcPoints(p, match.result)
-              return (
-                <div key={match.id} className="history-match">
-                  <div className="history-header">
-                    <div>
-                      <div className="history-game">{FLAGS[match.home]} {match.home} vs {match.away} {FLAGS[match.away]}</div>
-                      <div className="history-date">{match.date} · {match.city}</div>
-                    </div>
-                    <PtsChip pts={pts} />
-                  </div>
-                  <div className="history-scores">
-                    <div className="score-col">
-                      <span className="score-col-label">Seu palpite</span>
-                      <span className={`score-col-val ${pts !== null ? "pick-done" : "pick-pending"}`}>{p.home} – {p.away}</span>
-                    </div>
-                    {match.result ? (
-                      <>
-                        <div style={{ width: 1, background: "var(--border)", alignSelf: "stretch" }} />
-                        <div className="score-col">
-                          <span className="score-col-label">Real</span>
-                          <span className="score-col-val real">{match.result.home} – {match.result.away}</span>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="score-col">
-                        <span className="score-col-label">Real</span>
-                        <span className="score-col-val pick-pending">Aguard.</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )
-            })}
+            {roundPicks.map(match => <MatchRow key={match.id} match={match} city={match.city} />)}
           </div>
         )
       })}
+
+      {/* Eliminatórias */}
+      {knockMade.length > 0 && (
+        <div className="card" style={{ marginBottom: 14 }}>
+          <div className="round-header"><span className="round-title">Eliminatórias</span></div>
+          {knockMade.map(match => <MatchRow key={match.id} match={match} />)}
+        </div>
+      )}
     </div>
   )
 }
