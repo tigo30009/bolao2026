@@ -754,16 +754,16 @@ const KNOCKOUT = {
   r16: [
     // ── LADO ESQUERDO (top) ──
     { id:'k1',  date:'28/06', home:{name:'África do Sul', flag:'🇿🇦'}, away:{name:'Canadá',     flag:'🇨🇦'}, result:{ home: 0, away: 1 } },
-    { id:'k4',  date:'29/06', home:{name:'Holanda',       flag:'🇳🇱'}, away:{name:'Marrocos',    flag:'🇲🇦'}, result:null },
-    { id:'k3',  date:'29/06', home:{name:'Alemanha',      flag:'🇩🇪'}, away:{name:'Paraguai',    flag:'🇵🇾'}, result:null },
-    { id:'k6',  date:'30/06', home:{name:'França',        flag:'🇫🇷'}, away:{name:'Suécia',      flag:'🇸🇪'}, result:null },
+    { id:'k4',  date:'29/06', home:{name:'Holanda',       flag:'🇳🇱'}, away:{name:'Marrocos',    flag:'🇲🇦'}, result:{ home: 1, away: 1, pen: '2-3', winner: 'away' } },
+    { id:'k3',  date:'29/06', home:{name:'Alemanha',      flag:'🇩🇪'}, away:{name:'Paraguai',    flag:'🇵🇾'}, result:{ home: 1, away: 1, pen: '3-4', winner: 'away' } },
+    { id:'k6',  date:'30/06', home:{name:'França',        flag:'🇫🇷'}, away:{name:'Suécia',      flag:'🇸🇪'}, result:{ home: 3, away: 0 } },
     { id:'k11', date:'02/07', home:{name:'Espanha',       flag:'🇪🇸'}, away:{name:'Áustria',     flag:'🇦🇹'}, result:null },
     { id:'k12', date:'02/07', home:{name:'Portugal',      flag:'🇵🇹'}, away:{name:'Croácia',     flag:'🇭🇷'}, result:null },
     { id:'k10', date:'01/07', home:{name:'EUA',           flag:'🇺🇸'}, away:{name:'Bósnia',      flag:'🇧🇦'}, result:null },
     { id:'k9',  date:'01/07', home:{name:'Bélgica',       flag:'🇧🇪'}, away:{name:'Senegal',     flag:'🇸🇳'}, result:null },
     // ── LADO DIREITO (bottom) ──
-    { id:'k2',  date:'29/06', home:{name:'Brasil',        flag:'🇧🇷'}, away:{name:'Japão',       flag:'🇯🇵'}, result:null },
-    { id:'k5',  date:'30/06', home:{name:'C. do Marfim',  flag:'🇨🇮'}, away:{name:'Noruega',     flag:'🇳🇴'}, result:null },
+    { id:'k2',  date:'29/06', home:{name:'Brasil',        flag:'🇧🇷'}, away:{name:'Japão',       flag:'🇯🇵'}, result:{ home: 2, away: 1 } },
+    { id:'k5',  date:'30/06', home:{name:'C. do Marfim',  flag:'🇨🇮'}, away:{name:'Noruega',     flag:'🇳🇴'}, result:{ home: 1, away: 2 } },
     { id:'k7',  date:'30/06', home:{name:'México',        flag:'🇲🇽'}, away:{name:'Equador',     flag:'🇪🇨'}, result:null },
     { id:'k8',  date:'01/07', home:{name:'Inglaterra',    flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, away:{name:'Congo (RD)',  flag:'🇨🇩'}, result:null },
     { id:'k15', date:'03/07', home:{name:'Argentina',     flag:'🇦🇷'}, away:{name:'Cabo Verde',  flag:'🇨🇻'}, result:null },
@@ -814,21 +814,23 @@ function matchCY(i, n) {
 
 function BMatch({ m, isFinal }) {
   const hasResult = !!m.result
-  const homeWin = hasResult && m.result.home > m.result.away
-  const awayWin = hasResult && m.result.away > m.result.home
+  const hasPen = hasResult && !!m.result.pen
+  // winner: if penalties, use pen winner; otherwise higher score
+  const homeWin = hasResult && (hasPen ? m.result.winner === 'home' : m.result.home > m.result.away)
+  const awayWin = hasResult && (hasPen ? m.result.winner === 'away' : m.result.away > m.result.home)
   const isTbd = !m.home.flag
   return (
     <div className={`b-match${isFinal ? " final" : ""}`} style={{ height: MH, flexShrink: 0 }}>
-      <div className="b-date">{m.date}</div>
-      <div className={`b-team${isTbd ? " tbd" : ""}${homeWin ? " winner" : ""}${hasResult && !homeWin && hasResult ? " loser" : ""}`}>
+      <div className="b-date">{m.date}{hasPen ? ' (P)' : ''}</div>
+      <div className={`b-team${isTbd ? " tbd" : ""}${homeWin ? " winner" : ""}${hasResult && !homeWin ? " loser" : ""}`}>
         {m.home.flag && <span className="b-flag">{m.home.flag}</span>}
         <span className="b-name">{m.home.name}</span>
-        {hasResult && <span className="b-score">{m.result.home}</span>}
+        {hasResult && <span className="b-score">{m.result.home}{hasPen ? `(${m.result.pen.split('-')[0]})` : ''}</span>}
       </div>
-      <div className={`b-team${isTbd ? " tbd" : ""}${awayWin ? " winner" : ""}${hasResult && !awayWin && hasResult ? " loser" : ""}`}>
+      <div className={`b-team${isTbd ? " tbd" : ""}${awayWin ? " winner" : ""}${hasResult && !awayWin ? " loser" : ""}`}>
         {m.away.flag && <span className="b-flag">{m.away.flag}</span>}
         <span className="b-name">{m.away.name}</span>
-        {hasResult && <span className="b-score">{m.result.away}</span>}
+        {hasResult && <span className="b-score">{m.result.away}{hasPen ? `(${m.result.pen.split('-')[1]})` : ''}</span>}
       </div>
     </div>
   )
