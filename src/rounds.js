@@ -146,29 +146,6 @@ export const ROUNDS = [
       { id: "m72", home: "Jordânia",       away: "Argentina",       date: "27/06", time: "23h",    city: "Dallas",           group: "J", kickoff: "2026-06-27T23:00", result: { home: 1, away: 3 } },
     ],
   },
-  {
-    id: 4,
-    label: "Rodada de 16 — Eliminatórias",
-    startDate: "2026-06-28",
-    matches: [
-      { id: "k1",  home: "África do Sul", away: "Canadá",      date: "28/06", time: "16h",    city: "Vancouver",    group: "–", kickoff: "2026-06-28T16:00", result: null },
-      { id: "k2",  home: "Brasil",        away: "Japão",        date: "29/06", time: "14h",    city: "Dallas",       group: "–", kickoff: "2026-06-29T14:00", result: null },
-      { id: "k3",  home: "Alemanha",      away: "Paraguai",     date: "29/06", time: "17h30",  city: "Los Angeles",  group: "–", kickoff: "2026-06-29T17:30", result: null },
-      { id: "k4",  home: "Holanda",       away: "Marrocos",     date: "29/06", time: "22h",    city: "Nova York/NJ", group: "–", kickoff: "2026-06-29T22:00", result: null },
-      { id: "k5",  home: "C. do Marfim",  away: "Noruega",      date: "30/06", time: "14h",    city: "Atlanta",      group: "–", kickoff: "2026-06-30T14:00", result: null },
-      { id: "k6",  home: "França",        away: "Suécia",       date: "30/06", time: "18h",    city: "Miami",        group: "–", kickoff: "2026-06-30T18:00", result: null },
-      { id: "k7",  home: "México",        away: "Equador",      date: "30/06", time: "22h",    city: "Houston",      group: "–", kickoff: "2026-06-30T22:00", result: null },
-      { id: "k8",  home: "Inglaterra",    away: "Congo (RD)",   date: "01/07", time: "13h",    city: "Boston",       group: "–", kickoff: "2026-07-01T13:00", result: null },
-      { id: "k9",  home: "Bélgica",       away: "Senegal",      date: "01/07", time: "17h",    city: "Seattle",      group: "–", kickoff: "2026-07-01T17:00", result: null },
-      { id: "k10", home: "EUA",           away: "Bósnia",       date: "01/07", time: "21h",    city: "Kansas City",  group: "–", kickoff: "2026-07-01T21:00", result: null },
-      { id: "k11", home: "Espanha",       away: "Áustria",      date: "02/07", time: "16h",    city: "Guadalajara",  group: "–", kickoff: "2026-07-02T16:00", result: null },
-      { id: "k12", home: "Portugal",      away: "Croácia",      date: "02/07", time: "20h",    city: "São Francisco",group: "–", kickoff: "2026-07-02T20:00", result: null },
-      { id: "k13", home: "Suíça",         away: "Argélia",      date: "03/07", time: "00h",    city: "Toronto",      group: "–", kickoff: "2026-07-03T00:00", result: null },
-      { id: "k14", home: "Austrália",     away: "Egito",        date: "03/07", time: "15h",    city: "Monterrey",    group: "–", kickoff: "2026-07-03T15:00", result: null },
-      { id: "k15", home: "Argentina",     away: "Cabo Verde",   date: "03/07", time: "19h",    city: "Philadelphia", group: "–", kickoff: "2026-07-03T19:00", result: null },
-      { id: "k16", home: "Colômbia",      away: "Gana",         date: "03/07", time: "22h30",  city: "Cidade do México", group: "–", kickoff: "2026-07-03T22:30", result: null },
-    ],
-  },
 ]
 
 export function isPickAllowed(match) {
