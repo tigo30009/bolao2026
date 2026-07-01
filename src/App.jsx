@@ -485,9 +485,13 @@ const KNOCKOUT = {
   ],
 }
 
+// helper: extrai string do time (pode ser string ou {name,flag})
+function teamName(t) { return typeof t === 'string' ? t : t?.name || '' }
+function teamFlag(t) { return FLAGS[teamName(t)] || '' }
+
 // ─── PICKS TAB ───────────────────────────────────────────────────────────────
 function PicksTab({ currentUser, picks, savePick }) {
-  // Monta pseudo-rodada das eliminatórias a partir do KNOCKOUT
+  // Monta pseudo-rodada das eliminatórias — normaliza {name,flag} → string
   const knockoutRound = {
     id: 99,
     label: "Eliminatórias",
@@ -495,7 +499,14 @@ function PicksTab({ currentUser, picks, savePick }) {
     matches: [
       ...KNOCKOUT.r16, ...KNOCKOUT.qf, ...KNOCKOUT.sf,
       ...KNOCKOUT.semi, ...KNOCKOUT.final,
-    ].map(m => ({ ...m, group: "–", time: "", city: m.home.name !== '' ? "" : "" })),
+    ].map(m => ({
+      ...m,
+      home: m.home.name,
+      away: m.away.name,
+      group: "–",
+      time: "",
+      city: "",
+    })),
   }
 
   const allRounds = [...ROUNDS, knockoutRound]
@@ -699,7 +710,7 @@ function GaleraTab({ currentUser, picks, users }) {
         <div className="galera-match-header" onClick={() => setExpandedMatch(isExpanded ? null : match.id)}>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div className="galera-match-title">
-              {FLAGS[match.home] || ''} {match.home} vs {match.away} {FLAGS[match.away] || ''}
+              {teamFlag(match.home)} {teamName(match.home)} vs {teamName(match.away)} {teamFlag(match.away)}
             </div>
             <div className="galera-match-sub">{match.date}{match.city ? ` · ${match.city}` : ''}</div>
           </div>
@@ -839,7 +850,7 @@ function HistoryTab({ currentUser, picks }) {
       <div className="history-match">
         <div className="history-header">
           <div>
-            <div className="history-game">{FLAGS[match.home] || ''} {match.home} vs {match.away} {FLAGS[match.away] || ''}</div>
+            <div className="history-game">{teamFlag(match.home)} {teamName(match.home)} vs {teamName(match.away)} {teamFlag(match.away)}</div>
             <div className="history-date">{match.date}{city ? ` · ${city}` : ''}</div>
           </div>
           <PtsChip pts={pts} />
