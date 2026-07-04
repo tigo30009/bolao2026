@@ -504,8 +504,9 @@ function PicksTab({ currentUser, picks, savePick }) {
       home: m.home.name,
       away: m.away.name,
       group: "–",
-      time: "",
-      city: "",
+      time: m.time || "",
+      city: m.city || "",
+      kickoff: m.kickoff || null,
     })),
   }
 
