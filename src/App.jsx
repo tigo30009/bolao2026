@@ -451,22 +451,22 @@ const KNOCKOUT = {
     { id:'k5',  date:'30/06', home:{name:'C. do Marfim',  flag:'🇨🇮'}, away:{name:'Noruega',     flag:'🇳🇴'}, result:{ home: 1, away: 2 } },
     { id:'k7',  date:'30/06', home:{name:'México',        flag:'🇲🇽'}, away:{name:'Equador',     flag:'🇪🇨'}, result:{ home: 2, away: 0 } },
     { id:'k8',  date:'01/07', home:{name:'Inglaterra',    flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, away:{name:'Congo (RD)',  flag:'🇨🇩'}, result:{ home: 2, away: 1 } },
-    { id:'k15', date:'03/07', home:{name:'Argentina',     flag:'🇦🇷'}, away:{name:'Cabo Verde',  flag:'🇨🇻'}, result:null },
-    { id:'k14', date:'03/07', home:{name:'Austrália',     flag:'🇦🇺'}, away:{name:'Egito',       flag:'🇪🇬'}, result:null },
+    { id:'k15', date:'03/07', home:{name:'Argentina',     flag:'🇦🇷'}, away:{name:'Cabo Verde',  flag:'🇨🇻'}, result:{ home: 3, away: 2, pen: 'ET', winner: 'home' } },
+    { id:'k14', date:'03/07', home:{name:'Austrália',     flag:'🇦🇺'}, away:{name:'Egito',       flag:'🇪🇬'}, result:{ home: 1, away: 1, pen: '2-4', winner: 'away' } },
     { id:'k13', date:'03/07', home:{name:'Suíça',         flag:'🇨🇭'}, away:{name:'Argélia',     flag:'🇩🇿'}, result:{ home: 2, away: 0 } },
-    { id:'k16', date:'03/07', home:{name:'Colômbia',      flag:'🇨🇴'}, away:{name:'Gana',        flag:'🇬🇭'}, result:null },
+    { id:'k16', date:'03/07', home:{name:'Colômbia',      flag:'🇨🇴'}, away:{name:'Gana',        flag:'🇬🇭'}, result:{ home: 1, away: 0 } },
   ],
   qf: [
     // ── LADO ESQUERDO ──
-    { id:'q1', date:'04/07', home:{name:'Venc. K1',  flag:''}, away:{name:'Venc. K4',  flag:''}, result:null }, // Oit.1
-    { id:'q2', date:'04/07', home:{name:'Venc. K3',  flag:''}, away:{name:'Venc. K6',  flag:''}, result:null }, // Oit.2
-    { id:'q3', date:'06/07', home:{name:'Venc. K11', flag:''}, away:{name:'Venc. K12', flag:''}, result:null }, // Oit.3
-    { id:'q4', date:'06/07', home:{name:'Venc. K10', flag:''}, away:{name:'Venc. K9',  flag:''}, result:null }, // Oit.4
+    { id:'q1', date:'04/07', home:{name:'Canadá',    flag:'🇨🇦'}, away:{name:'Marrocos', flag:'🇲🇦'}, result:null }, // Oit.1
+    { id:'q2', date:'04/07', home:{name:'Paraguai',  flag:'🇵🇾'}, away:{name:'França',   flag:'🇫🇷'}, result:null }, // Oit.2
+    { id:'q3', date:'06/07', home:{name:'Espanha',   flag:'🇪🇸'}, away:{name:'Portugal', flag:'🇵🇹'}, result:null }, // Oit.3
+    { id:'q4', date:'06/07', home:{name:'EUA',       flag:'🇺🇸'}, away:{name:'Bélgica',  flag:'🇧🇪'}, result:null }, // Oit.4
     // ── LADO DIREITO ──
-    { id:'q5', date:'05/07', home:{name:'Venc. K2',  flag:''}, away:{name:'Venc. K5',  flag:''}, result:null }, // Oit.5
-    { id:'q6', date:'05/07', home:{name:'Venc. K7',  flag:''}, away:{name:'Venc. K8',  flag:''}, result:null }, // Oit.6
-    { id:'q7', date:'07/07', home:{name:'Venc. K15', flag:''}, away:{name:'Venc. K14', flag:''}, result:null }, // Oit.7
-    { id:'q8', date:'07/07', home:{name:'Venc. K13', flag:''}, away:{name:'Venc. K16', flag:''}, result:null }, // Oit.8
+    { id:'q5', date:'05/07', home:{name:'Brasil',    flag:'🇧🇷'}, away:{name:'Noruega',  flag:'🇳🇴'}, result:null }, // Oit.5
+    { id:'q6', date:'05/07', home:{name:'México',    flag:'🇲🇽'}, away:{name:'Inglaterra',flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, result:null }, // Oit.6
+    { id:'q7', date:'07/07', home:{name:'Argentina', flag:'🇦🇷'}, away:{name:'Egito',    flag:'🇪🇬'}, result:null }, // Oit.7
+    { id:'q8', date:'07/07', home:{name:'Suíça',     flag:'🇨🇭'}, away:{name:'Colômbia', flag:'🇨🇴'}, result:null }, // Oit.8
   ],
   sf: [
     // ── LADO ESQUERDO ──
