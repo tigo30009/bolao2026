@@ -459,7 +459,7 @@ const KNOCKOUT = {
   qf: [
     // ── LADO ESQUERDO ──
     { id:"q1", date:"04/07", time:"14h",    kickoff:"2026-07-04T14:00", home:{name:"Canadá",    flag:"🇨🇦"}, away:{name:"Marrocos",  flag:"🇲🇦"}, result:{ home: 0, away: 3 } }, // Oit.1
-    { id:"q2", date:"04/07", time:"18h",    kickoff:"2026-07-04T19:00", home:{name:"Paraguai",  flag:"🇵🇾"}, away:{name:"França",    flag:"🇫🇷"}, result:null }, // Oit.2
+    { id:"q2", date:"04/07", time:"18h",    kickoff:"2026-07-04T20:00", home:{name:"Paraguai",  flag:"🇵🇾"}, away:{name:"França",    flag:"🇫🇷"}, result:null }, // Oit.2
     { id:"q3", date:"06/07", time:"16h",    kickoff:"2026-07-06T16:00", home:{name:"Portugal",  flag:"🇵🇹"}, away:{name:"Espanha",   flag:"🇪🇸"}, result:null }, // Oit.3
     { id:"q4", date:"06/07", time:"21h",    kickoff:"2026-07-06T21:00", home:{name:"EUA",       flag:"🇺🇸"}, away:{name:"Bélgica",   flag:"🇧🇪"}, result:null }, // Oit.4
     // ── LADO DIREITO ──
