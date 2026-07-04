@@ -459,7 +459,7 @@ const KNOCKOUT = {
   qf: [
     // ── LADO ESQUERDO ──
     { id:"q1", date:"04/07", time:"14h",    kickoff:"2026-07-04T14:00", home:{name:"Canadá",    flag:"🇨🇦"}, away:{name:"Marrocos",  flag:"🇲🇦"}, result:{ home: 0, away: 3 } }, // Oit.1
-    { id:"q2", date:"04/07", time:"18h",    kickoff:"2026-07-04T20:00", home:{name:"Paraguai",  flag:"🇵🇾"}, away:{name:"França",    flag:"🇫🇷"}, result:null }, // Oit.2
+    { id:"q2", date:"04/07", time:"18h",    kickoff:"2026-07-04T20:00", home:{name:"Paraguai",  flag:"🇵🇾"}, away:{name:"França",    flag:"🇫🇷"}, result:{ home: 0, away: 1 } }, // Oit.2
     { id:"q3", date:"06/07", time:"16h",    kickoff:"2026-07-06T16:00", home:{name:"Portugal",  flag:"🇵🇹"}, away:{name:"Espanha",   flag:"🇪🇸"}, result:null }, // Oit.3
     { id:"q4", date:"06/07", time:"21h",    kickoff:"2026-07-06T21:00", home:{name:"EUA",       flag:"🇺🇸"}, away:{name:"Bélgica",   flag:"🇧🇪"}, result:null }, // Oit.4
     // ── LADO DIREITO ──
@@ -1000,14 +1000,71 @@ function BCol({ label, matches, totalH }) {
   )
 }
 
-function MataMataTab() {
+// Retorna o objeto {name,flag} do vencedor de um jogo, ou null se não houver resultado
+function getWinner(m) {
+  if (!m?.result) return null
+  const { home, away, pen, winner } = m.result
+  if (pen) return winner === 'home' ? m.home : m.away
+  if (home > away) return m.home
+  if (away > home) return m.away
+  return null
+}
+
+// Popula automaticamente os confrontos das próximas fases com os vencedores já conhecidos
+function resolveKnockout() {
   const { r16, qf, sf, semi, final } = KNOCKOUT
+
+  // Oitavas: cada qf[i] recebe os vencedores dos r16 correspondentes (já configurados manualmente)
+  // Quartas: sf[i] recebe vencedores dos qf
+  const sfResolved = sf.map((m, i) => {
+    const feedL = qf[i * 2]
+    const feedR = qf[i * 2 + 1]
+    const wL = getWinner(feedL)
+    const wR = getWinner(feedR)
+    return {
+      ...m,
+      home: wL || m.home,
+      away: wR || m.away,
+    }
+  })
+
+  // Semifinais: semi[i] recebe vencedores das quartas
+  const semiResolved = semi.map((m, i) => {
+    const feedL = sfResolved[i * 2]
+    const feedR = sfResolved[i * 2 + 1]
+    const wL = getWinner(feedL)
+    const wR = getWinner(feedR)
+    return {
+      ...m,
+      home: wL || m.home,
+      away: wR || m.away,
+    }
+  })
+
+  // Final: recebe vencedores das semis
+  const finalResolved = [{
+    ...final[0],
+    home: getWinner(semiResolved[0]) || final[0].home,
+    away: getWinner(semiResolved[1]) || final[0].away,
+  }]
+
+  return {
+    r16,
+    qf,
+    sf: sfResolved,
+    semi: semiResolved,
+    final: finalResolved,
+  }
+}
+
+function MataMataTab() {
+  const KO = resolveKnockout()
+  const { r16, qf, sf, semi, final } = KO
   const r16L = r16.slice(0,8),  r16R = r16.slice(8,16)
   const qfL  = qf.slice(0,4),   qfR  = qf.slice(4,8)
   const sfL  = sf.slice(0,2),   sfR  = sf.slice(2,4)
 
-  // Total content height — based on 8 matches with gaps
-  const TOTAL_H = colH(8)  // 8*66 + 7*4 = 556px
+  const TOTAL_H = colH(8)
 
   return (
     <div>
@@ -1020,8 +1077,6 @@ function MataMataTab() {
       </div>
       <div className="bracket-outer">
         <div style={{ display: 'flex', alignItems: 'flex-start', width: 'max-content', padding: '0 12px' }}>
-
-          {/* ── LEFT SIDE ── */}
           <BCol label="Rodada 16" matches={r16L} totalH={TOTAL_H} />
           <BConn leftN={8} rightN={4} totalH={TOTAL_H} direction="ltr" />
           <BCol label="Oitavas" matches={qfL} totalH={TOTAL_H} />
@@ -1030,16 +1085,12 @@ function MataMataTab() {
           <BConn leftN={2} rightN={1} totalH={TOTAL_H} direction="ltr" />
           <BCol label="Semi" matches={semi.slice(0,1)} totalH={TOTAL_H} />
           <BConn leftN={1} rightN={1} totalH={TOTAL_H} direction="ltr" />
-
-          {/* ── FINAL CENTER ── */}
           <div style={{ display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
             <div className="b-phase-hdr" style={{ height: 20, color: '#15803D', textAlign: 'center' }}>🏆 Final</div>
             <div style={{ height: TOTAL_H, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <BMatch m={final[0]} isFinal />
             </div>
           </div>
-
-          {/* ── RIGHT SIDE (mirrored) ── */}
           <BConn leftN={1} rightN={1} totalH={TOTAL_H} direction="rtl" />
           <BCol label="Semi" matches={semi.slice(1,2)} totalH={TOTAL_H} />
           <BConn leftN={2} rightN={1} totalH={TOTAL_H} direction="rtl" />
@@ -1048,7 +1099,6 @@ function MataMataTab() {
           <BCol label="Oitavas" matches={qfR} totalH={TOTAL_H} />
           <BConn leftN={8} rightN={4} totalH={TOTAL_H} direction="rtl" />
           <BCol label="Rodada 16" matches={r16R} totalH={TOTAL_H} />
-
         </div>
       </div>
     </div>
