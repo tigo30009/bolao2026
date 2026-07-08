@@ -460,21 +460,21 @@ const KNOCKOUT = {
     // ── LADO ESQUERDO ──
     { id:"q1", date:"04/07", time:"14h",    kickoff:"2026-07-04T14:00", home:{name:"Canadá",    flag:"🇨🇦"}, away:{name:"Marrocos",  flag:"🇲🇦"}, result:{ home: 0, away: 3 } }, // Oit.1
     { id:"q2", date:"04/07", time:"18h",    kickoff:"2026-07-04T20:00", home:{name:"Paraguai",  flag:"🇵🇾"}, away:{name:"França",    flag:"🇫🇷"}, result:{ home: 0, away: 1 } }, // Oit.2
-    { id:"q3", date:"06/07", time:"16h",    kickoff:"2026-07-06T16:00", home:{name:"Portugal",  flag:"🇵🇹"}, away:{name:"Espanha",   flag:"🇪🇸"}, result:null }, // Oit.3
-    { id:"q4", date:"06/07", time:"21h",    kickoff:"2026-07-06T21:00", home:{name:"EUA",       flag:"🇺🇸"}, away:{name:"Bélgica",   flag:"🇧🇪"}, result:null }, // Oit.4
+    { id:"q3", date:"06/07", time:"16h",    kickoff:"2026-07-06T16:00", home:{name:"Portugal",  flag:"🇵🇹"}, away:{name:"Espanha",   flag:"🇪🇸"}, result:{ home: 0, away: 1 } }, // Oit.3
+    { id:"q4", date:"06/07", time:"21h",    kickoff:"2026-07-06T21:00", home:{name:"EUA",       flag:"🇺🇸"}, away:{name:"Bélgica",   flag:"🇧🇪"}, result:{ home: 1, away: 4 } }, // Oit.4
     // ── LADO DIREITO ──
-    { id:"q5", date:"05/07", time:"17h",    kickoff:"2026-07-05T17:00", home:{name:"Brasil",    flag:"🇧🇷"}, away:{name:"Noruega",   flag:"🇳🇴"}, result:null }, // Oit.5
-    { id:"q6", date:"05/07", time:"21h",    kickoff:"2026-07-05T21:00", home:{name:"México",    flag:"🇲🇽"}, away:{name:"Inglaterra",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"}, result:null }, // Oit.6
-    { id:"q7", date:"07/07", time:"13h",    kickoff:"2026-07-07T13:00", home:{name:"Argentina", flag:"🇦🇷"}, away:{name:"Egito",     flag:"🇪🇬"}, result:null }, // Oit.7
-    { id:"q8", date:"07/07", time:"17h",    kickoff:"2026-07-07T17:00", home:{name:"Suíça",     flag:"🇨🇭"}, away:{name:"Colômbia",  flag:"🇨🇴"}, result:null }, // Oit.8
+    { id:"q5", date:"05/07", time:"17h",    kickoff:"2026-07-05T17:00", home:{name:"Brasil",    flag:"🇧🇷"}, away:{name:"Noruega",   flag:"🇳🇴"}, result:{ home: 1, away: 2 } }, // Oit.5
+    { id:"q6", date:"05/07", time:"21h",    kickoff:"2026-07-05T21:00", home:{name:"México",    flag:"🇲🇽"}, away:{name:"Inglaterra",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"}, result:{ home: 2, away: 3 } }, // Oit.6
+    { id:"q7", date:"07/07", time:"13h",    kickoff:"2026-07-07T13:00", home:{name:"Argentina", flag:"🇦🇷"}, away:{name:"Egito",     flag:"🇪🇬"}, result:{ home: 3, away: 2 } }, // Oit.7
+    { id:"q8", date:"07/07", time:"17h",    kickoff:"2026-07-07T17:00", home:{name:"Suíça",     flag:"🇨🇭"}, away:{name:"Colômbia",  flag:"🇨🇴"}, result:{ home: 0, away: 0, pen:"4-3", winner:"home" } }, // Oit.8
   ],
   sf: [
     // ── LADO ESQUERDO ──
-    { id:'s1', date:'09/07', home:{name:'Venc. Oit.1', flag:''}, away:{name:'Venc. Oit.2', flag:''}, result:null }, // Qrt.1
-    { id:'s2', date:'10/07', home:{name:'Venc. Oit.3', flag:''}, away:{name:'Venc. Oit.4', flag:''}, result:null }, // Qrt.2
+    { id:'s1', date:'09/07', time:'17h', kickoff:'2026-07-09T17:00', home:{name:'Marrocos',   flag:'🇲🇦'}, away:{name:'França',    flag:'🇫🇷'}, result:null }, // Qrt.1
+    { id:'s2', date:'10/07', time:'16h', kickoff:'2026-07-10T16:00', home:{name:'Espanha',    flag:'🇪🇸'}, away:{name:'Bélgica',   flag:'🇧🇪'}, result:null }, // Qrt.2
     // ── LADO DIREITO ──
-    { id:'s3', date:'11/07', home:{name:'Venc. Oit.5', flag:''}, away:{name:'Venc. Oit.6', flag:''}, result:null }, // Qrt.3
-    { id:'s4', date:'11/07', home:{name:'Venc. Oit.7', flag:''}, away:{name:'Venc. Oit.8', flag:''}, result:null }, // Qrt.4
+    { id:'s3', date:'11/07', time:'18h', kickoff:'2026-07-11T18:00', home:{name:'Noruega',    flag:'🇳🇴'}, away:{name:'Inglaterra',flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'}, result:null }, // Qrt.3
+    { id:'s4', date:'11/07', time:'22h', kickoff:'2026-07-11T22:00', home:{name:'Suíça',      flag:'🇨🇭'}, away:{name:'Argentina', flag:'🇦🇷'}, result:null }, // Qrt.4
   ],
   semi: [
     { id:'se1', date:'14/07', home:{name:'Venc. Qrt.1', flag:''}, away:{name:'Venc. Qrt.2', flag:''}, result:null },
